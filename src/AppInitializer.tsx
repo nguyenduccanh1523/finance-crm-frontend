@@ -3,7 +3,11 @@ import { useAppDispatch } from "@/app/store";
 import { axiosClient } from "@/lib/api/axiosClient";
 import { setUser, setStatus, clearUser } from "@/app/store/authSlice";
 
-export function AppInitializer({ children }) {
+interface AppInitializerProps {
+  children: React.ReactNode;
+}
+
+export function AppInitializer({ children }: AppInitializerProps) {
   const dispatch = useAppDispatch();
 
   useEffect(() => {

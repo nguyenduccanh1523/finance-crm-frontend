@@ -3,7 +3,11 @@ import { Navigate } from "react-router-dom"
 import { useAppSelector } from "@/app/store"
 import { AppLoading } from "@/components/layout/AppLoading";
 
-export function RequireAuth({ children }) {
+interface RequireAuthProps {
+  children: React.ReactNode;
+}
+
+export function RequireAuth({ children }: RequireAuthProps) {
   const user = useAppSelector(s => s.auth.user);
   const status = useAppSelector(s => s.auth.status);
 

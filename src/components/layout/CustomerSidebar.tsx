@@ -4,15 +4,21 @@ import { NavLink } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import type { NavItem } from "@/app/router/nav-config";
 
-export function CustomerSidebar({ navItems, title, onWidthChange }) {
+
+interface CustomerSidebarProps {
+  navItems: { path: string; label: string; icon: React.ReactNode }[];
+  title: string;
+  onWidthChange?: (width: number) => void;
+}
+
+export function CustomerSidebar({ navItems, title, onWidthChange }: CustomerSidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
   const width = collapsed ? 80 : 270;
 
   useEffect(() => {
     onWidthChange?.(width);
-  }, [collapsed]);
+  }, [collapsed, width, onWidthChange]);
 
   return (
     <aside
