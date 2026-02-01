@@ -18,6 +18,7 @@ import { AdminAnalyticsPage } from "@/page/admin/AdminAnalyticsPage";
 import { NoPermissionPage } from "@/page/system/NoPermissionPage";
 import { NotFoundPage } from "@/page/system/NotFoundPage";
 import { AdminDashboardPage } from "@/page/admin/AdminDashBoardPage";
+import { BillingPage } from "@/page/billing/BillingPage";
 
 const router = createBrowserRouter([
   {
@@ -52,7 +53,10 @@ const router = createBrowserRouter([
         <AppLayout />
       </RequireAuth>
     ),
-    children: [{ index: true, element: <UserHomePage /> }],
+    children: [
+      { index: true, element: <UserHomePage /> },
+      { path: "billing", element: <BillingPage /> },
+    ],
   },
 
   // DEFAULT: redirect

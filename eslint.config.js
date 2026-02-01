@@ -27,6 +27,7 @@ export default defineConfig([
       '@typescript-eslint/no-unused-vars': 'off',
       '@typescript-eslint/no-require-imports': 'off',
       'no-empty': 'off',
+      'react-hooks/set-state-in-effect': 'off',
     },
   },
 ])

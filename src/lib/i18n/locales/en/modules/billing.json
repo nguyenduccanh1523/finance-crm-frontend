@@ -1,0 +1,164 @@
+{
+  "billing": {
+    "title": "Pricing Plans",
+    "subtitle": "Choose the perfect plan for your financial management needs",
+    "tab": {
+      "personal": "Personal",
+      "organization": "Organization"
+    },
+    "period": {
+      "monthly": "Monthly",
+      "annual": "Annual",
+      "save": "Save 20%"
+    },
+    "personal": {
+      "community": {
+        "name": "Community",
+        "description": "Get started with the industry-standard financial tracking",
+        "price_monthly": 0,
+        "price_annual": 0,
+        "cta": "Get Started",
+        "features": [
+          "Basic transaction tracking",
+          "Up to 100 transactions/month",
+          "Monthly financial reports",
+          "Basic expense categorization",
+          "Mobile app access"
+        ]
+      },
+      "starter": {
+        "name": "Starter",
+        "description": "Best for individuals starting their financial journey",
+        "price_monthly": 19,
+        "price_annual": 190,
+        "cta": "Get Started",
+        "features": [
+          "Unlimited transactions",
+          "Advanced reports & analytics",
+          "Budget planning tools",
+          "Recurring transaction automation",
+          "Community support"
+        ]
+      },
+      "pro": {
+        "name": "Pro",
+        "description": "The most complete features for serious personal finance management",
+        "price_monthly": 49,
+        "price_annual": 490,
+        "cta": "Get Started",
+        "highlighted": true,
+        "features": [
+          "All Starter features",
+          "AI-powered financial insights",
+          "Multi-currency support",
+          "Advanced investment tracking",
+          "Priority support"
+        ]
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "description": "White-label solution with dedicated support",
+        "price_monthly": 99,
+        "price_annual": 990,
+        "cta": "Subscribe Now",
+        "features": [
+          "All Pro features",
+          "Custom API access",
+          "White-label capability",
+          "Dedicated account manager",
+          "Custom integrations"
+        ]
+      }
+    },
+    "organization": {
+      "starter": {
+        "name": "Starter",
+        "description": "Perfect for small teams managing shared finances",
+        "price_monthly": 19,
+        "price_annual": 190,
+        "cta": "Get Started",
+        "features": [
+          "Up to 10 team members",
+          "Unlimited transactions",
+          "Basic shared transactions",
+          "Team expense tracking",
+          "Monthly financial reports"
+        ]
+      },
+      "pro": {
+        "name": "Pro",
+        "description": "Advanced financial management with comprehensive analytics",
+        "price_monthly": 49,
+        "price_annual": 490,
+        "cta": "Get Started",
+        "highlighted": true,
+        "features": [
+          "Up to 50 team members",
+          "All Starter features",
+          "Real-time analytics dashboard",
+          "Custom reports & exports",
+          "Priority support",
+          "Advanced permission management"
+        ]
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "description": "Enterprise-grade solution with unlimited scale and support",
+        "price_monthly": 99,
+        "price_annual": 990,
+        "cta": "Subscribe Now",
+        "features": [
+          "Unlimited team members",
+          "All Pro features",
+          "Custom integrations",
+          "Dedicated support team",
+          "SLA guarantees",
+          "White-label capability"
+        ]
+      }
+    },
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "items": [
+        {
+          "question": "Can I upgrade or downgrade my plan anytime?",
+          "answer": "Yes! You can change your plan at any time. Changes take effect on your next billing cycle."
+        },
+        {
+          "question": "What payment methods do you accept?",
+          "answer": "We accept all major credit cards, PayPal, and bank transfers for enterprise customers."
+        },
+        {
+          "question": "Is there a free trial?",
+          "answer": "Yes! All plans include a 14-day free trial with full access to all features."
+        },
+        {
+          "question": "Do you offer custom solutions?",
+          "answer": "Absolutely! For enterprise needs, contact our sales team for tailored pricing and solutions."
+        }
+      ]
+    },
+    "payment": {
+      "selectMethod": "Select Payment Method",
+      "cardDetails": "Card Details",
+      "cardholderName": "Cardholder Name",
+      "email": "Email",
+      "checkoutTitle": "Complete Your Purchase",
+      "orderSummary": "Order Summary",
+      "billingPeriod": "Billing Period",
+      "monthly": "Monthly",
+      "annual": "Annual",
+      "month": "month",
+      "year": "year",
+      "processing": "Processing...",
+      "payNow": "Pay Now",
+      "loadingForm": "Loading payment form...",
+      "securePayment": "Your payment is secure and encrypted",
+      "securityNote": "🔒 Your payment information is encrypted and secure",
+      "comingSoon": "This payment method is coming soon. Please use Credit/Debit Card for now.",
+      "paymentFailed": "Payment failed. Please try again.",
+      "subscriptionCreated": "Subscription created successfully!",
+      "interval": "Billing Period"
+    }
+  }
+}

@@ -1,0 +1,164 @@
+{
+  "billing": {
+    "title": "Gói Giá Dịch Vụ",
+    "subtitle": "Chọn gói phù hợp với nhu cầu quản lý tài chính của bạn",
+    "tab": {
+      "personal": "Cá Nhân",
+      "organization": "Tổ Chức"
+    },
+    "period": {
+      "monthly": "Hàng Tháng",
+      "annual": "Hàng Năm",
+      "save": "Tiết Kiệm 20%"
+    },
+    "personal": {
+      "community": {
+        "name": "Miễn Phí",
+        "description": "Bắt đầu với công cụ theo dõi tài chính cơ bản",
+        "price_monthly": 0,
+        "price_annual": 0,
+        "cta": "Bắt Đầu",
+        "features": [
+          "Theo dõi giao dịch cơ bản",
+          "Tối đa 100 giao dịch/tháng",
+          "Báo cáo tài chính hàng tháng",
+          "Phân loại chi tiêu cơ bản",
+          "Truy cập ứng dụng di động"
+        ]
+      },
+      "starter": {
+        "name": "Bắt Đầu",
+        "description": "Tốt nhất cho những cá nhân bắt đầu hành trình tài chính",
+        "price_monthly": 19,
+        "price_annual": 190,
+        "cta": "Bắt Đầu",
+        "features": [
+          "Giao dịch không giới hạn",
+          "Báo cáo và phân tích nâng cao",
+          "Công cụ lập kế hoạch ngân sách",
+          "Tự động hóa giao dịch định kỳ",
+          "Hỗ trợ cộng đồng"
+        ]
+      },
+      "pro": {
+        "name": "Chuyên Nghiệp",
+        "description": "Tính năng hoàn chỉnh nhất cho quản lý tài chính cá nhân chuyên nghiệp",
+        "price_monthly": 49,
+        "price_annual": 490,
+        "cta": "Bắt Đầu",
+        "highlighted": true,
+        "features": [
+          "Tất cả tính năng Bắt Đầu",
+          "Insights tài chính được hỗ trợ bởi AI",
+          "Hỗ trợ đa tiền tệ",
+          "Theo dõi đầu tư nâng cao",
+          "Hỗ trợ ưu tiên"
+        ]
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "description": "Giải pháp tùy chỉnh hoàn toàn với hỗ trợ chuyên dụng",
+        "price_monthly": 99,
+        "price_annual": 990,
+        "cta": "Đăng Ký Ngay",
+        "features": [
+          "Tất cả tính năng Chuyên Nghiệp",
+          "Truy cập API tùy chỉnh",
+          "Khả năng white-label",
+          "Quản lý tài khoản chuyên dụng",
+          "Tích hợp tùy chỉnh"
+        ]
+      }
+    },
+    "organization": {
+      "starter": {
+        "name": "Bắt Đầu",
+        "description": "Hoàn hảo cho các đội nhỏ quản lý tài chính chung",
+        "price_monthly": 19,
+        "price_annual": 190,
+        "cta": "Bắt Đầu",
+        "features": [
+          "Tối đa 10 thành viên đội",
+          "Giao dịch không giới hạn",
+          "Giao dịch chung cơ bản",
+          "Theo dõi chi tiêu đội",
+          "Báo cáo tài chính hàng tháng"
+        ]
+      },
+      "pro": {
+        "name": "Pro",
+        "description": "Quản lý tài chính nâng cao với phân tích toàn diện",
+        "price_monthly": 49,
+        "price_annual": 490,
+        "cta": "Bắt Đầu",
+        "highlighted": true,
+        "features": [
+          "Tối đa 50 thành viên đội",
+          "Tất cả tính năng Bắt Đầu",
+          "Bảng điều khiển phân tích theo thời gian thực",
+          "Báo cáo và xuất khẩu tùy chỉnh",
+          "Hỗ trợ ưu tiên",
+          "Quản lý quyền hạn nâng cao"
+        ]
+      },
+      "enterprise": {
+        "name": "Enterprise",
+        "description": "Giải pháp cấp doanh nghiệp với khả năng mở rộng không giới hạn",
+        "price_monthly": 99,
+        "price_annual": 990,
+        "cta": "Đăng Ký Ngay",
+        "features": [
+          "Thành viên đội không giới hạn",
+          "Tất cả tính năng Pro",
+          "Tích hợp tùy chỉnh",
+          "Đội hỗ trợ chuyên dụng",
+          "Đảm bảo SLA",
+          "Khả năng white-label"
+        ]
+      }
+    },
+    "faq": {
+      "title": "Câu Hỏi Thường Gặp",
+      "items": [
+        {
+          "question": "Tôi có thể nâng cấp hoặc hạ cấp gói bất kỳ lúc nào không?",
+          "answer": "Có! Bạn có thể thay đổi gói bất kỳ lúc nào. Thay đổi sẽ có hiệu lực từ chu kỳ thanh toán tiếp theo."
+        },
+        {
+          "question": "Bạn chấp nhận những phương thức thanh toán nào?",
+          "answer": "Chúng tôi chấp nhận tất cả các thẻ tín dụng chính, PayPal và chuyển khoản ngân hàng cho khách hàng doanh nghiệp."
+        },
+        {
+          "question": "Có bản dùng thử miễn phí không?",
+          "answer": "Có! Tất cả các gói đều bao gồm bản dùng thử 14 ngày với quyền truy cập đầy đủ vào tất cả các tính năng."
+        },
+        {
+          "question": "Bạn có cung cấp các giải pháp tùy chỉnh không?",
+          "answer": "Tất nhiên! Đối với nhu cầu doanh nghiệp, vui lòng liên hệ với đội bán hàng để có định giá và giải pháp tùy chỉnh."
+        }
+      ]
+    },
+    "payment": {
+      "selectMethod": "Chọn Phương Thức Thanh Toán",
+      "cardDetails": "Chi Tiết Thẻ",
+      "cardholderName": "Tên Chủ Thẻ",
+      "email": "Email",
+      "checkoutTitle": "Hoàn Tất Mua Hàng",
+      "orderSummary": "Tóm Tắt Đơn Hàng",
+      "billingPeriod": "Chu Kỳ Thanh Toán",
+      "monthly": "Hàng Tháng",
+      "annual": "Hàng Năm",
+      "month": "tháng",
+      "year": "năm",
+      "processing": "Đang xử lý...",
+      "payNow": "Thanh Toán Ngay",
+      "loadingForm": "Đang tải form thanh toán...",
+      "securePayment": "Thanh toán của bạn an toàn và được mã hóa",
+      "securityNote": "🔒 Thông tin thanh toán của bạn được mã hóa và bảo vệ",
+      "comingSoon": "Phương thức thanh toán này sẽ sớm có. Vui lòng sử dụng Thẻ Tín dụng/Ghi nợ lúc này.",
+      "paymentFailed": "Thanh toán không thành công. Vui lòng thử lại.",
+      "subscriptionCreated": "Đăng ký thành công!",
+      "interval": "Chu Kỳ Thanh Toán"
+    }
+  }
+}

@@ -5,14 +5,17 @@ import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils/utils";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
-
 interface CustomerSidebarProps {
   navItems: { path: string; label: string; icon: React.ReactNode }[];
   title: string;
   onWidthChange?: (width: number) => void;
 }
 
-export function CustomerSidebar({ navItems, title, onWidthChange }: CustomerSidebarProps) {
+export function CustomerSidebar({
+  navItems,
+  title,
+  onWidthChange,
+}: CustomerSidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
   const width = collapsed ? 80 : 270;
 
@@ -23,8 +26,8 @@ export function CustomerSidebar({ navItems, title, onWidthChange }: CustomerSide
   return (
     <aside
       className={cn(
-        "flex h-full flex-col pt-6 pb-4 rounded-r-2xl bg-white/90 dark:bg-gray-950/90 backdrop-blur-xl border-r shadow-lg transition-all duration-300",
-        collapsed ? "w-20 px-3" : "w-72 px-6"
+        "flex h-full flex-col pt-6 pb-4 rounded-r-2xl bg-white/90 dark:bg-gray-800/90 backdrop-blur-xl border-r border-gray-200 dark:border-gray-700 shadow-lg transition-all duration-300",
+        collapsed ? "w-20 px-3" : "w-72 px-6",
       )}
     >
       {/* HEADER */}
@@ -48,13 +51,14 @@ export function CustomerSidebar({ navItems, title, onWidthChange }: CustomerSide
           <NavLink
             to={item.path}
             key={item.path}
+            end
             className={({ isActive }) =>
               cn(
                 "flex items-center gap-3 px-3 py-3 rounded-xl font-medium transition-all",
                 collapsed ? "justify-center" : "justify-start",
-                "hover:bg-blue-100/70 dark:hover:bg-gray-800",
+                "hover:bg-blue-100/70 dark:hover:bg-gray-700",
                 isActive &&
-                  "bg-blue-600 text-white shadow-md hover:bg-blue-700"
+                  "bg-blue-600 text-white shadow-md hover:bg-blue-700 dark:bg-blue-600 dark:hover:bg-blue-700",
               )
             }
           >

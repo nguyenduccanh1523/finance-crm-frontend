@@ -48,8 +48,8 @@ export const appNavItems: NavItem[] = [
     icon: <Wallet className="h-4 w-4" />,
   },
   {
-    label: "Reports",
-    path: "/app/reports",
+    label: "Pricing",
+    path: "/app/billing",
     icon: <Receipt className="h-4 w-4" />,
   },
 ];
@@ -62,5 +62,5 @@ export const breadcrumbMap: Record<string, string> = {
   "/admin/manage-users": "Manage Users",
   "/app": "Overview",
   "/app/transactions": "Transactions",
-  "/app/reports": "Reports",
+  "/app/billing": "Pricing",
 };
