@@ -5,7 +5,21 @@ import { clearUser } from "@/app/store/authSlice";
 import { useNavigate, useLocation } from "react-router-dom";
 import { breadcrumbMap } from "@/app/router/nav-config";
 import { LanguageSwitcher } from "@/components/common/LanguageSwitcher";
-import { Moon, Sun } from "lucide-react";
+import {
+  Moon,
+  Sun,
+  Folder,
+  Tag,
+  Briefcase,
+  CreditCard,
+  LayoutDashboard,
+  Wallet,
+  Receipt,
+  ArrowRight,
+  BookOpen,
+  Zap,
+  Layout,
+} from "lucide-react";
 import { setTheme } from "@/app/store/uiSlice";
 
 import {
@@ -16,7 +30,51 @@ import {
   DropdownMenuSeparator,
   DropdownMenuLabel,
 } from "@/components/ui/dropdown-menu";
+import {
+  NavigationMenu,
+  NavigationMenuList,
+  NavigationMenuItem,
+  NavigationMenuTrigger,
+  NavigationMenuContent,
+} from "@/components/ui/navigation-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { cn } from "@/lib/utils/utils";
+
+interface NavSection {
+  title: string;
+  items: Array<{
+    label: string;
+    description: string;
+    icon: React.ReactNode;
+    path: string;
+  }>;
+}
+
+const navSections: NavSection[] = [
+  {
+    title: "Docs",
+    items: [
+      {
+        label: "Getting Started",
+        description: "Quick start guide and setup instructions",
+        icon: <Zap size={20} />,
+        path: "/docs/getting-started",
+      },
+      {
+        label: "Components",
+        description: "Reusable components built with Tailwind CSS",
+        icon: <Layout size={20} />,
+        path: "/docs/components",
+      },
+      {
+        label: "Documentation",
+        description: "Complete API reference and guides",
+        icon: <BookOpen size={20} />,
+        path: "/docs",
+      },
+    ],
+  },
+];
 
 export function CustomerHeader() {
   const user = useAppSelector((s) => s.auth.user);
@@ -31,79 +89,163 @@ export function CustomerHeader() {
     "U";
 
   const pageTitle = breadcrumbMap[location.pathname] || "Dashboard";
+  const isActive = (path: string) => location.pathname === path;
 
   return (
-    <header className="flex h-20 items-center justify-between px-10 bg-transparent">
-      {/* LEFT — Dynamic Page Title */}
-      <h2 className="text-2xl font-semibold tracking-tight text-gray-800 dark:text-gray-100">
-        {pageTitle}
-      </h2>
+    <header className="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-gray-800 bg-white/95 dark:bg-gray-950/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-gray-950/60 shadow-sm">
+      <div className="flex h-16 items-center justify-between px-8">
+        {/* LEFT — Logo + Page Title */}
+        <div className="flex items-center gap-6">
+          <div
+            onClick={() => navigate("/app")}
+            className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition"
+          >
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center">
+              <span className="text-white font-bold text-sm">$</span>
+            </div>
+            <div className="hidden sm:flex flex-col">
+              <span className="text-xs font-semibold text-gray-500 dark:text-gray-400">
+                Finance
+              </span>
+              <span className="text-sm font-bold text-gray-900 dark:text-white">
+                CRM
+              </span>
+            </div>
+          </div>
 
-      {/* RIGHT ACTIONS */}
-      <div className="flex items-center gap-4">
-        {/* PRICING BUTTON */}
-        <button
-          onClick={() => navigate("/app/billing")}
-          className="hidden sm:flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-600 hover:to-indigo-700 text-white font-semibold transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl dark:from-blue-400 dark:to-indigo-500 dark:hover:from-blue-500 dark:hover:to-indigo-600"
-        >
-          🎯 Pricing
-        </button>
+          {/* Divider */}
+          <div className="hidden sm:block w-px h-6 bg-gray-200 dark:bg-gray-700" />
 
-        {/* THEME SWITCH */}
-        <button
-          onClick={() =>
-            dispatch(setTheme(theme === "dark" ? "light" : "dark"))
-          }
-          className="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-all duration-300"
-        >
-          {theme === "dark" ? (
-            <Sun className="h-5 w-5 text-yellow-500" />
-          ) : (
-            <Moon className="h-5 w-5 text-gray-700" />
-          )}
-        </button>
+          {/* Dynamic Page Title */}
+          <div className="hidden sm:flex items-center gap-2">
+            <h1 className="text-lg font-semibold text-gray-900 dark:text-white">
+              {pageTitle}
+            </h1>
+          </div>
 
-        {/* LANGUAGE */}
-        <LanguageSwitcher />
+          {/* Navigation Menu */}
+          <NavigationMenu className="hidden lg:flex ml-auto">
+            <NavigationMenuList>
+              {navSections.map((section) => (
+                <NavigationMenuItem key={section.title}>
+                  <NavigationMenuTrigger className="text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 data-[state=open]:bg-gray-100 dark:data-[state=open]:bg-gray-800/50">
+                    {section.title}
+                  </NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <div className="w-[450px] p-4">
+                      <div className="space-y-1">
+                        {section.items.map((item) => (
+                          <button
+                            key={item.path}
+                            onClick={() => navigate(item.path)}
+                            className={cn(
+                              "w-full group relative rounded-lg px-4 py-3 transition-all duration-200 text-left",
+                              "hover:bg-gray-100 dark:hover:bg-gray-800/70",
+                              isActive(item.path) &&
+                                "bg-blue-50 dark:bg-blue-900/20",
+                            )}
+                          >
+                            <div className="flex items-start gap-3">
+                              <div
+                                className={cn(
+                                  "text-gray-500 dark:text-gray-400 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors flex-shrink-0 mt-0.5",
+                                  isActive(item.path) &&
+                                    "text-blue-600 dark:text-blue-400",
+                                )}
+                              >
+                                {item.icon}
+                              </div>
+                              <div className="flex-1 min-w-0">
+                                <div className="flex items-center gap-2">
+                                  <span className="font-medium text-gray-900 dark:text-white text-sm">
+                                    {item.label}
+                                  </span>
+                                  <ArrowRight
+                                    size={12}
+                                    className="opacity-0 group-hover:opacity-100 transition-opacity flex-shrink-0"
+                                  />
+                                </div>
+                                <p className="text-xs text-gray-600 dark:text-gray-400 mt-1.5 leading-relaxed">
+                                  {item.description}
+                                </p>
+                              </div>
+                            </div>
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              ))}
+            </NavigationMenuList>
+          </NavigationMenu>
+        </div>
 
-        {/* AVATAR DROPDOWN */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <button className="flex items-center gap-2 rounded-full bg-white dark:bg-gray-700 px-3 py-2 shadow hover:bg-gray-100 dark:hover:bg-gray-600 transition-all duration-300">
-              <Avatar className="h-8 w-8">
-                <AvatarFallback>{initials}</AvatarFallback>
-              </Avatar>
-            </button>
-          </DropdownMenuTrigger>
+        {/* RIGHT — Actions */}
+        <div className="flex items-center gap-3">
+          {/* Page Title Mobile */}
+          <div className="sm:hidden">
+            <p className="text-xs font-semibold text-gray-700 dark:text-gray-300 truncate max-w-[100px]">
+              {pageTitle}
+            </p>
+          </div>
 
-          <DropdownMenuContent align="end" className="w-48">
-            <DropdownMenuLabel className="font-medium">
-              {user?.fullName ?? user?.email}
-            </DropdownMenuLabel>
-            <DropdownMenuSeparator />
+          {/* Theme Switch */}
+          <button
+            onClick={() =>
+              dispatch(setTheme(theme === "dark" ? "light" : "dark"))
+            }
+            className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+            title="Toggle theme"
+          >
+            {theme === "dark" ? (
+              <Sun className="h-5 w-5 text-yellow-500" />
+            ) : (
+              <Moon className="h-5 w-5 text-gray-700" />
+            )}
+          </button>
 
-            <DropdownMenuItem onClick={() => navigate("/app/profile")}>
-              Profile
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => navigate("/app/billing")}>
-              Billing
-            </DropdownMenuItem>
-            <DropdownMenuItem onClick={() => navigate("/app/settings")}>
-              Settings
-            </DropdownMenuItem>
+          {/* Language */}
+          <LanguageSwitcher />
 
-            <DropdownMenuSeparator />
-            <DropdownMenuItem
-              onClick={() => {
-                dispatch(clearUser());
-                navigate("/auth/login");
-              }}
-              className="text-red-500"
-            >
-              Logout
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+          {/* Avatar Dropdown */}
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="flex items-center gap-2 rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 px-3 py-2 hover:from-blue-100 hover:to-indigo-100 dark:hover:from-blue-900/30 dark:hover:to-indigo-900/30 transition-all border border-blue-200 dark:border-blue-800/50">
+                <Avatar className="h-7 w-7">
+                  <AvatarFallback className="text-xs font-bold bg-gradient-to-br from-blue-600 to-indigo-600 text-white">
+                    {initials}
+                  </AvatarFallback>
+                </Avatar>
+              </button>
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent align="end" className="w-48">
+              <DropdownMenuLabel className="font-medium">
+                {user?.fullName ?? user?.email}
+              </DropdownMenuLabel>
+              <DropdownMenuSeparator />
+
+              <DropdownMenuItem onClick={() => navigate("/app/profile")}>
+                Profile
+              </DropdownMenuItem>
+              <DropdownMenuItem onClick={() => navigate("/app/settings")}>
+                Settings
+              </DropdownMenuItem>
+
+              <DropdownMenuSeparator />
+              <DropdownMenuItem
+                onClick={() => {
+                  dispatch(clearUser());
+                  navigate("/auth/login");
+                }}
+                className="text-red-500 dark:text-red-400"
+              >
+                Logout
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
       </div>
     </header>
   );

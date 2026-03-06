@@ -19,6 +19,10 @@ import { NoPermissionPage } from "@/page/system/NoPermissionPage";
 import { NotFoundPage } from "@/page/system/NotFoundPage";
 import { AdminDashboardPage } from "@/page/admin/AdminDashBoardPage";
 import { BillingPage } from "@/page/billing/BillingPage";
+import { CategoryPage } from "@/page/app/category/CategoryPage";
+import { TagsPage } from "@/page/app/tags/TagsPage";
+import { PersonalWorkspacePage } from "@/page/app/personal-workspace/PersonalWorkspacePage";
+import { AccountPage } from "@/page/app/account/AccountPage";
 
 const router = createBrowserRouter([
   {
@@ -55,6 +59,11 @@ const router = createBrowserRouter([
     ),
     children: [
       { index: true, element: <UserHomePage /> },
+      { path: "transactions", element: <TransactionsPage /> },
+      { path: "categories", element: <CategoryPage /> },
+      { path: "tags", element: <TagsPage /> },
+      { path: "personal-workspace", element: <PersonalWorkspacePage /> },
+      { path: "account", element: <AccountPage /> },
       { path: "billing", element: <BillingPage /> },
     ],
   },

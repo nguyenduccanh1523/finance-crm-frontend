@@ -5,12 +5,17 @@ import {
   Users,
   Wallet,
   Receipt,
+  Folder,
+  Tag,
+  Briefcase,
+  CreditCard,
 } from "lucide-react";
 
 export type NavItem = {
   label: string;
   path: string;
   icon: ReactNode;
+  submenu?: NavItem[];
 };
 
 export const adminNavItems: NavItem[] = [
@@ -48,6 +53,33 @@ export const appNavItems: NavItem[] = [
     icon: <Wallet className="h-4 w-4" />,
   },
   {
+    label: "Catalog",
+    path: "#",
+    icon: <Folder className="h-4 w-4" />,
+    submenu: [
+      {
+        label: "Categories",
+        path: "/app/categories",
+        icon: <Folder className="h-4 w-4" />,
+      },
+      {
+        label: "Tags",
+        path: "/app/tags",
+        icon: <Tag className="h-4 w-4" />,
+      },
+    ],
+  },
+  {
+    label: "Personal Workspace",
+    path: "/app/personal-workspace",
+    icon: <Briefcase className="h-4 w-4" />,
+  },
+  {
+    label: "Account",
+    path: "/app/account",
+    icon: <CreditCard className="h-4 w-4" />,
+  },
+  {
     label: "Pricing",
     path: "/app/billing",
     icon: <Receipt className="h-4 w-4" />,
@@ -62,5 +94,9 @@ export const breadcrumbMap: Record<string, string> = {
   "/admin/manage-users": "Manage Users",
   "/app": "Overview",
   "/app/transactions": "Transactions",
+  "/app/categories": "Categories",
+  "/app/tags": "Tags",
+  "/app/personal-workspace": "Personal Workspace",
+  "/app/account": "Account",
   "/app/billing": "Pricing",
 };
