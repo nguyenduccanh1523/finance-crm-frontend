@@ -224,10 +224,22 @@ export function AccountPage() {
     });
   };
 
-  const totalBalance = accounts.reduce(
-    (sum, acc) => sum + acc.openingBalanceCents,
-    0,
+  // Calculate total balance per currency
+  const totalsByCurrency = accounts.reduce(
+    (acc, account) => {
+      const balance = Math.round(
+        Number(account.currentBalanceCents ?? account.openingBalanceCents) || 0,
+      );
+      const currency = account.currency;
+      acc[currency] = Math.round((acc[currency] || 0) + balance);
+      return acc;
+    },
+    {} as Record<string, number>,
   );
+
+  const currencyTotals = Object.entries(totalsByCurrency)
+    .sort(([currencyA], [currencyB]) => currencyA.localeCompare(currencyB))
+    .map(([currency, total]) => ({ currency, total }));
 
   if (loading) {
     return (
@@ -270,18 +282,18 @@ export function AccountPage() {
       </div>
 
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        {/* Total Balance */}
-        <Card className="p-6 border-0 shadow-md bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/40 dark:to-indigo-950/40">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-4">
+        {/* Currency Totals */}
+        <Card className="lg:col-span-2 p-6 border-0 shadow-md bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-950/40 dark:to-indigo-950/40">
           <div className="flex items-center justify-between mb-4">
             <p className="text-sm font-medium text-gray-600 dark:text-gray-400">
-              Total Balance
+              Total Balance by Currency
             </p>
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setShowTotalBalance(!showTotalBalance)}
                 className="p-2 hover:bg-blue-100 dark:hover:bg-blue-900/40 rounded-lg transition text-gray-400 hover:text-blue-600"
-                title={showTotalBalance ? "Hide total" : "Show total"}
+                title={showTotalBalance ? "Hide totals" : "Show totals"}
               >
                 {showTotalBalance ? <Eye size={18} /> : <EyeOff size={18} />}
               </button>
@@ -293,18 +305,31 @@ export function AccountPage() {
               </div>
             </div>
           </div>
-          {showTotalBalance ? (
-            <p className="text-2xl font-bold text-gray-900 dark:text-white">
-              {formatCurrency(totalBalance)}
-            </p>
+          {currencyTotals.length > 0 ? (
+            <div className="space-y-3">
+              {currencyTotals.map(({ currency, total }) => (
+                <div
+                  key={currency}
+                  className="flex items-center justify-between p-3 bg-white dark:bg-gray-800 rounded-lg"
+                >
+                  <span className="text-sm font-semibold text-gray-600 dark:text-gray-300">
+                    {currency}
+                  </span>
+                  {showTotalBalance ? (
+                    <span className="text-lg font-bold text-blue-600 dark:text-blue-400">
+                      {formatCurrency(total)}
+                    </span>
+                  ) : (
+                    <div className="h-6 bg-gray-300 dark:bg-gray-600 rounded w-24 animate-pulse"></div>
+                  )}
+                </div>
+              ))}
+            </div>
           ) : (
-            <div className="h-8 bg-gray-300 dark:bg-gray-600 rounded-lg w-40 animate-pulse"></div>
+            <p className="text-sm text-gray-600 dark:text-gray-400">
+              No accounts
+            </p>
           )}
-          <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
-            {accounts.length > 0
-              ? `Across ${accounts.length} account(s)`
-              : "No accounts"}
-          </p>
         </Card>
 
         {/* Active Accounts */}
@@ -320,11 +345,11 @@ export function AccountPage() {
               />
             </div>
           </div>
-          <p className="text-2xl font-bold text-gray-900 dark:text-white">
+          <p className="text-3xl font-bold text-gray-900 dark:text-white">
             {accounts.length}
           </p>
           <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
-            All accounts are active
+            {currencyTotals.length} currencies in use
           </p>
         </Card>
 
@@ -341,7 +366,7 @@ export function AccountPage() {
               />
             </div>
           </div>
-          <p className="text-2xl font-bold text-gray-900 dark:text-white">
+          <p className="text-3xl font-bold text-gray-900 dark:text-white">
             {new Set(accounts.map((a) => a.type)).size}
           </p>
           <p className="text-xs text-gray-600 dark:text-gray-400 mt-2">
@@ -402,7 +427,7 @@ export function AccountPage() {
                 <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
                   <div className="flex items-center justify-between mb-3">
                     <p className="text-xs font-semibold text-gray-600 dark:text-gray-400 uppercase tracking-wide">
-                      Opening Balance
+                      Current Balance
                     </p>
                     <button
                       onClick={() => toggleBalance(account.id)}
@@ -421,24 +446,28 @@ export function AccountPage() {
                     </button>
                   </div>
 
-                  {visibleBalances[account.id] ? (
+                  {account.currentBalanceCents !== undefined ? (
+                    visibleBalances[account.id] ? (
+                      <p className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-1">
+                        {formatCurrency(account.currentBalanceCents)}
+                      </p>
+                    ) : (
+                      <div className="flex items-center gap-2 mb-1">
+                        <div className="h-8 bg-gray-300 dark:bg-gray-600 rounded-lg w-32 animate-pulse"></div>
+                      </div>
+                    )
+                  ) : (
                     <p className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-1">
                       {formatCurrency(account.openingBalanceCents)}
                     </p>
-                  ) : (
-                    <div className="flex items-center gap-2 mb-1">
-                      <div className="h-8 bg-gray-300 dark:bg-gray-600 rounded-lg w-32 animate-pulse"></div>
-                    </div>
                   )}
 
-                  {account.currentBalanceCents !== undefined && (
-                    <p className="text-xs text-gray-600 dark:text-gray-400">
-                      Current:{" "}
-                      {visibleBalances[account.id]
-                        ? formatCurrency(account.currentBalanceCents)
-                        : "••••"}
-                    </p>
-                  )}
+                  <p className="text-xs text-gray-600 dark:text-gray-400">
+                    Opening:{" "}
+                    {visibleBalances[account.id]
+                      ? formatCurrency(account.openingBalanceCents)
+                      : "••••"}
+                  </p>
                 </div>
 
                 {/* Actions */}
@@ -576,19 +605,26 @@ export function AccountPage() {
                 Opening Balance <span className="text-red-500">*</span>
               </label>
               <Input
-                type="number"
+                type="text"
                 placeholder="0.00"
-                value={formData.openingBalanceCents / 100}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    openingBalanceCents: Math.round(
-                      parseFloat(e.target.value || "0") * 100,
-                    ),
-                  })
-                }
+                value={(formData.openingBalanceCents / 100).toLocaleString(
+                  "en-US",
+                  {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  },
+                )}
+                onChange={(e) => {
+                  const value = e.target.value.replace(/,/g, "");
+                  const numValue = parseFloat(value || "0");
+                  if (!isNaN(numValue)) {
+                    setFormData({
+                      ...formData,
+                      openingBalanceCents: Math.round(numValue * 100),
+                    });
+                  }
+                }}
                 disabled={createLoading || updateLoading}
-                step="0.01"
                 className="border-2 focus:border-blue-500 focus:ring-0"
               />
             </div>

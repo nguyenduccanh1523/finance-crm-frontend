@@ -12,6 +12,21 @@ export interface Account {
   updatedAt?: string;
 }
 
+export function normalizeAccount(data: any): Account {
+  return {
+    id: data.id,
+    name: data.name,
+    type: data.type,
+    currency: data.currency,
+    openingBalanceCents: Number(data.openingBalanceCents) || 0,
+    currentBalanceCents: data.currentBalanceCents
+      ? Number(data.currentBalanceCents)
+      : undefined,
+    createdAt: data.createdAt,
+    updatedAt: data.updatedAt,
+  };
+}
+
 export function useGetAccounts() {
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [loading, setLoading] = useState(false);
@@ -23,13 +38,14 @@ export function useGetAccounts() {
 
     try {
       const response = await axiosClient.get("/personal/accounts");
-      const data = Array.isArray(response.data.data)
+      const rawData = Array.isArray(response.data.data)
         ? response.data.data
         : Array.isArray(response.data)
           ? response.data
           : [];
-      setAccounts(data);
-      return data;
+      const normalizedData = rawData.map(normalizeAccount);
+      setAccounts(normalizedData);
+      return normalizedData;
     } catch (err: any) {
       const msg = err?.response?.data?.message ?? "Failed to fetch accounts";
       setError(msg);
@@ -58,7 +74,8 @@ export function useCreateAccount() {
 
       try {
         const response = await axiosClient.post("/personal/accounts", data);
-        return response.data.data || response.data;
+        const resultData = response.data.data || response.data;
+        return normalizeAccount(resultData);
       } catch (err: any) {
         const msg = err?.response?.data?.message ?? "Failed to create account";
         setError(msg);
@@ -95,7 +112,8 @@ export function useUpdateAccount() {
           `/personal/accounts/${id}`,
           data,
         );
-        return response.data.data || response.data;
+        const resultData = response.data.data || response.data;
+        return normalizeAccount(resultData);
       } catch (err: any) {
         const msg = err?.response?.data?.message ?? "Failed to update account";
         setError(msg);
