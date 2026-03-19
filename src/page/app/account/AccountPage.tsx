@@ -217,7 +217,13 @@ export function AccountPage() {
     }));
   };
 
-  const formatCurrency = (cents: number) => {
+  const formatCurrency = (cents: number, currency: string = "USD") => {
+    const noDecimalCurrencies = ["VND", "JPY", "KRW", "PHP", "IDR", "THB"];
+
+    if (noDecimalCurrencies.includes(currency)) {
+      return cents.toLocaleString("vi-VN");
+    }
+
     return (cents / 100).toLocaleString("en-US", {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
@@ -317,7 +323,7 @@ export function AccountPage() {
                   </span>
                   {showTotalBalance ? (
                     <span className="text-lg font-bold text-blue-600 dark:text-blue-400">
-                      {formatCurrency(total)}
+                      {formatCurrency(total, currency)}
                     </span>
                   ) : (
                     <div className="h-6 bg-gray-300 dark:bg-gray-600 rounded w-24 animate-pulse"></div>
@@ -449,7 +455,10 @@ export function AccountPage() {
                   {account.currentBalanceCents !== undefined ? (
                     visibleBalances[account.id] ? (
                       <p className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-1">
-                        {formatCurrency(account.currentBalanceCents)}
+                        {formatCurrency(
+                          account.currentBalanceCents,
+                          account.currency,
+                        )}
                       </p>
                     ) : (
                       <div className="flex items-center gap-2 mb-1">
@@ -458,14 +467,20 @@ export function AccountPage() {
                     )
                   ) : (
                     <p className="text-3xl font-bold text-blue-600 dark:text-blue-400 mb-1">
-                      {formatCurrency(account.openingBalanceCents)}
+                      {formatCurrency(
+                        account.openingBalanceCents,
+                        account.currency,
+                      )}
                     </p>
                   )}
 
                   <p className="text-xs text-gray-600 dark:text-gray-400">
                     Opening:{" "}
                     {visibleBalances[account.id]
-                      ? formatCurrency(account.openingBalanceCents)
+                      ? formatCurrency(
+                          account.openingBalanceCents,
+                          account.currency,
+                        )
                       : "••••"}
                   </p>
                 </div>
@@ -607,21 +622,53 @@ export function AccountPage() {
               <Input
                 type="text"
                 placeholder="0.00"
-                value={(formData.openingBalanceCents / 100).toLocaleString(
-                  "en-US",
-                  {
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                  },
-                )}
+                value={(() => {
+                  const noDecimalCurrencies = [
+                    "VND",
+                    "JPY",
+                    "KRW",
+                    "PHP",
+                    "IDR",
+                    "THB",
+                  ];
+                  if (noDecimalCurrencies.includes(formData.currency)) {
+                    return formData.openingBalanceCents.toLocaleString("vi-VN");
+                  }
+                  return (formData.openingBalanceCents / 100).toLocaleString(
+                    "en-US",
+                    {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    },
+                  );
+                })()}
                 onChange={(e) => {
-                  const value = e.target.value.replace(/,/g, "");
+                  const value = e.target.value
+                    .replace(/,/g, "")
+                    .replace(/\./g, "");
                   const numValue = parseFloat(value || "0");
                   if (!isNaN(numValue)) {
-                    setFormData({
-                      ...formData,
-                      openingBalanceCents: Math.round(numValue * 100),
-                    });
+                    const noDecimalCurrencies = [
+                      "VND",
+                      "JPY",
+                      "KRW",
+                      "PHP",
+                      "IDR",
+                      "THB",
+                    ];
+                    if (noDecimalCurrencies.includes(formData.currency)) {
+                      // For VND and similar: store the value directly
+                      setFormData({
+                        ...formData,
+                        openingBalanceCents: Math.round(numValue),
+                      });
+                    } else {
+                      // For USD and similar: multiply by 100
+                      setFormData({
+                        ...formData,
+                        openingBalanceCents: Math.round(numValue * 100),
+                      });
+                    }
                   }
                 }}
                 disabled={createLoading || updateLoading}
