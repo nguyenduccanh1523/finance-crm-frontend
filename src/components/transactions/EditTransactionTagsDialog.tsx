@@ -64,9 +64,12 @@ export function EditTransactionTagsDialog({
         <DialogHeader>
           <DialogTitle>Edit Tags</DialogTitle>
           <DialogDescription className="text-xs mt-2">
-            Transaction: <span className="font-semibold">{transaction.counterparty}</span>
+            Transaction:{" "}
+            <span className="font-semibold">{transaction.counterparty}</span>
             <br />
-            Amount: <span className="font-semibold">{transaction.amountCents}</span> ({transaction.currency || "USD"})
+            Amount:{" "}
+            <span className="font-semibold">{transaction.amountCents}</span> (
+            {transaction.currency || "USD"})
           </DialogDescription>
         </DialogHeader>
 
@@ -84,7 +87,9 @@ export function EditTransactionTagsDialog({
                 allTags.map((tag) => (
                   <Badge
                     key={tag.id}
-                    variant={selectedTags.includes(tag.id) ? "default" : "outline"}
+                    variant={
+                      selectedTags.includes(tag.id) ? "default" : "outline"
+                    }
                     className="cursor-pointer hover:shadow-md transition-shadow px-3 py-1.5"
                     onClick={() => toggleTag(tag.id)}
                     style={{
@@ -92,7 +97,9 @@ export function EditTransactionTagsDialog({
                         ? tag.color
                         : "transparent",
                       borderColor: tag.color,
-                      color: selectedTags.includes(tag.id) ? "white" : "inherit",
+                      color: selectedTags.includes(tag.id)
+                        ? "white"
+                        : "inherit",
                       border: `2px solid ${tag.color}`,
                     }}
                   >
@@ -111,7 +118,8 @@ export function EditTransactionTagsDialog({
           {selectedTags.length > 0 && (
             <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-3 text-sm">
               <p className="text-blue-900 dark:text-blue-100">
-                <strong>{selectedTags.length}</strong> tag{selectedTags.length !== 1 ? "s" : ""} selected
+                <strong>{selectedTags.length}</strong> tag
+                {selectedTags.length !== 1 ? "s" : ""} selected
               </p>
             </div>
           )}

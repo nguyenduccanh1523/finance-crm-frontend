@@ -70,7 +70,9 @@ export interface CreateTransactionParams {
   note: string;
   counterparty: string;
   tagIds: string[];
-  transferAccountId?: string;  exchangeRate?: number;}
+  transferAccountId?: string;
+  exchangeRate?: number;
+}
 
 export interface UpdateTransactionParams {
   tagIds?: string[];
