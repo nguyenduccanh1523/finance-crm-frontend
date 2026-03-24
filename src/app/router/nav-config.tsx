@@ -9,6 +9,7 @@ import {
   Tag,
   Briefcase,
   CreditCard,
+  Calendar,
 } from "lucide-react";
 
 export type NavItem = {
@@ -53,6 +54,11 @@ export const appNavItems: NavItem[] = [
     icon: <Wallet className="h-4 w-4" />,
   },
   {
+    label: "Recurring Rules",
+    path: "/app/recurring-rules",
+    icon: <Calendar className="h-4 w-4" />,
+  },
+  {
     label: "Catalog",
     path: "#",
     icon: <Folder className="h-4 w-4" />,
@@ -94,6 +100,7 @@ export const breadcrumbMap: Record<string, string> = {
   "/admin/manage-users": "Manage Users",
   "/app": "Overview",
   "/app/transactions": "Transactions",
+  "/app/recurring-rules": "Recurring Rules",
   "/app/categories": "Categories",
   "/app/tags": "Tags",
   "/app/personal-workspace": "Personal Workspace",

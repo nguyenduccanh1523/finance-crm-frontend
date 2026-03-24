@@ -20,6 +20,7 @@ import { useNavigate } from "react-router-dom";
 import { ErrorAlert, SuccessAlert } from "@/components/common/alert/Alert";
 import { useAppToast } from "@/components/common/toast/useToast";
 import { useTranslation } from "react-i18next";
+import { ngrokClient } from "@/lib/api/axiosClient";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email"),
@@ -40,6 +41,29 @@ export function LoginPage() {
   const { t, i18n } = useTranslation("common");
 
   const [successMessage, setSuccessMessage] = useState("");
+  const [testData, setTestData] = useState<any>(null);
+  const [testLoading, setTestLoading] = useState(false);
+  const [testError, setTestError] = useState("");
+
+  const fetchTestAPI = async () => {
+    setTestLoading(true);
+    setTestError("");
+    setTestData(null);
+    try {
+      const response = await ngrokClient.get(
+        "/ngrok-api/api/search-session/f72ee998ef5ab586ab7d855c5a1f763d?limit=50",
+      );
+      setTestData(response.data);
+      showSuccess("API test successful!");
+    } catch (err) {
+      const errorMessage =
+        err instanceof Error ? err.message : "Failed to fetch API data";
+      setTestError(errorMessage);
+      showError(errorMessage);
+    } finally {
+      setTestLoading(false);
+    }
+  };
 
   const onSubmit = async (data: LoginFormValues) => {
     try {
@@ -72,6 +96,16 @@ export function LoginPage() {
       <CardContent>
         {error && <ErrorAlert message={error} />}
         {successMessage && <SuccessAlert message={successMessage} />}
+        {testError && <ErrorAlert message={testError} />}
+
+        {testData && (
+          <div className="mb-4 rounded-lg border border-blue-200 bg-blue-50 p-3 text-sm">
+            <p className="font-semibold text-blue-900">API Response:</p>
+            <pre className="mt-2 max-h-32 overflow-auto text-xs text-blue-800">
+              {JSON.stringify(testData, null, 2)}
+            </pre>
+          </div>
+        )}
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
@@ -115,6 +149,17 @@ export function LoginPage() {
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               )}
               {t("login")}
+            </Button>
+
+            <Button
+              type="button"
+              variant="outline"
+              className="mt-2 h-11 w-full text-base"
+              disabled={testLoading}
+              onClick={fetchTestAPI}
+            >
+              {testLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
+              Test API
             </Button>
           </form>
         </Form>

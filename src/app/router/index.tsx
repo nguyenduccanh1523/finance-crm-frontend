@@ -23,6 +23,7 @@ import { CategoryPage } from "@/page/app/category/CategoryPage";
 import { TagsPage } from "@/page/app/tags/TagsPage";
 import { PersonalWorkspacePage } from "@/page/app/personal-workspace/PersonalWorkspacePage";
 import { AccountPage } from "@/page/app/account/AccountPage";
+import { RecurringRulesPage } from "@/page/app/recurring-rules";
 
 const router = createBrowserRouter([
   {
@@ -60,6 +61,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <UserHomePage /> },
       { path: "transactions", element: <TransactionsPage /> },
+      { path: "recurring-rules", element: <RecurringRulesPage /> },
       { path: "categories", element: <CategoryPage /> },
       { path: "tags", element: <TagsPage /> },
       { path: "personal-workspace", element: <PersonalWorkspacePage /> },
