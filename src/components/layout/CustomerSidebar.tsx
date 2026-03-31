@@ -101,7 +101,7 @@ export function CustomerSidebar({
                   end
                   className={({ isActive }) =>
                     cn(
-                      "flex items-center gap-3 px-3 py-2 rounded-lg font-medium transition-all",
+                      "flex items-center justify-between gap-3 px-3 py-2 rounded-lg font-medium transition-all",
                       collapsed ? "justify-center" : "justify-start",
                       "hover:bg-gray-200 dark:hover:bg-gray-800",
                       isActive &&
@@ -109,8 +109,26 @@ export function CustomerSidebar({
                     )
                   }
                 >
-                  <div className="text-lg">{item.icon}</div>
-                  {!collapsed && <span>{item.label}</span>}
+                  <div className="flex items-center gap-3">
+                    <div className="text-lg">{item.icon}</div>
+                    {!collapsed && <span>{item.label}</span>}
+                  </div>
+                  {!collapsed && item.badge && (
+                    <span
+                      className={cn(
+                        "text-xs font-bold px-2 py-0.5 rounded-full whitespace-nowrap",
+                        item.badge.variant === "hot"
+                          ? "bg-red-500/20 text-red-600 dark:text-red-400 dark:bg-red-900/40"
+                          : item.badge.variant === "new"
+                            ? "bg-blue-500/20 text-blue-600 dark:text-blue-400 dark:bg-blue-900/40"
+                            : item.badge.variant === "popular"
+                              ? "bg-purple-500/20 text-purple-600 dark:text-purple-400 dark:bg-purple-900/40"
+                              : "bg-amber-500/20 text-amber-600 dark:text-amber-400 dark:bg-amber-900/40",
+                      )}
+                    >
+                      {item.badge.text}
+                    </span>
+                  )}
                 </NavLink>
               )}
 

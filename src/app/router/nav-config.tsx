@@ -10,6 +10,9 @@ import {
   Briefcase,
   CreditCard,
   Calendar,
+  PieChart,
+  Target,
+  Lightbulb,
 } from "lucide-react";
 
 export type NavItem = {
@@ -17,6 +20,10 @@ export type NavItem = {
   path: string;
   icon: ReactNode;
   submenu?: NavItem[];
+  badge?: {
+    text: string;
+    variant?: "hot" | "new" | "popular" | "featured";
+  };
 };
 
 export const adminNavItems: NavItem[] = [
@@ -52,6 +59,24 @@ export const appNavItems: NavItem[] = [
     label: "Transactions",
     path: "/app/transactions",
     icon: <Wallet className="h-4 w-4" />,
+  },
+  {
+    label: "💰 Budgets",
+    path: "/app/budgets",
+    icon: <PieChart className="h-4 w-4" />,
+    badge: { text: "Hot", variant: "hot" },
+  },
+  {
+    label: "🎯 Goals",
+    path: "/app/goals",
+    icon: <Target className="h-4 w-4" />,
+    badge: { text: "Hot", variant: "hot" },
+  },
+  {
+    label: "💡 Insights",
+    path: "/app/insights",
+    icon: <Lightbulb className="h-4 w-4" />,
+    badge: { text: "New", variant: "new" },
   },
   {
     label: "Recurring Rules",
@@ -100,6 +125,9 @@ export const breadcrumbMap: Record<string, string> = {
   "/admin/manage-users": "Manage Users",
   "/app": "Overview",
   "/app/transactions": "Transactions",
+  "/app/budgets": "Budget Management",
+  "/app/goals": "Financial Goals",
+  "/app/insights": "Insights & Suggestions",
   "/app/recurring-rules": "Recurring Rules",
   "/app/categories": "Categories",
   "/app/tags": "Tags",

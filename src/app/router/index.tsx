@@ -24,6 +24,9 @@ import { TagsPage } from "@/page/app/tags/TagsPage";
 import { PersonalWorkspacePage } from "@/page/app/personal-workspace/PersonalWorkspacePage";
 import { AccountPage } from "@/page/app/account/AccountPage";
 import { RecurringRulesPage } from "@/page/app/recurring-rules";
+import { BudgetsPage } from "@/page/app/budgets";
+import { GoalsPage } from "@/page/app/goals";
+import { InsightsPage } from "@/page/app/insights";
 
 const router = createBrowserRouter([
   {
@@ -61,6 +64,9 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <UserHomePage /> },
       { path: "transactions", element: <TransactionsPage /> },
+      { path: "budgets", element: <BudgetsPage /> },
+      { path: "goals", element: <GoalsPage /> },
+      { path: "insights", element: <InsightsPage /> },
       { path: "recurring-rules", element: <RecurringRulesPage /> },
       { path: "categories", element: <CategoryPage /> },
       { path: "tags", element: <TagsPage /> },

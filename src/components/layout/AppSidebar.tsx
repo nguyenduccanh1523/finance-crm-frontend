@@ -12,7 +12,11 @@ interface AppSidebarProps {
   onWidthChange?: (width: number) => void;
 }
 
-export function AppSidebar({ navItems, title, onWidthChange }: AppSidebarProps) {
+export function AppSidebar({
+  navItems,
+  title,
+  onWidthChange,
+}: AppSidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
   const width = collapsed ? 64 : 256;
 
@@ -24,7 +28,7 @@ export function AppSidebar({ navItems, title, onWidthChange }: AppSidebarProps) 
     <aside
       className={cn(
         "flex h-full flex-col border-r bg-card/95 pt-6 transition-all duration-300",
-        collapsed ? "w-16 px-2" : "w-64 px-4"
+        collapsed ? "w-16 px-2" : "w-64 px-4",
       )}
     >
       {/* HEADER */}
@@ -51,14 +55,32 @@ export function AppSidebar({ navItems, title, onWidthChange }: AppSidebarProps) 
             to={item.path}
             className={({ isActive }) =>
               cn(
-                "flex items-center gap-3 rounded-md px-2 py-2 text-muted-foreground transition-colors",
+                "flex items-center justify-between gap-3 rounded-md px-2 py-2 text-muted-foreground transition-colors group",
                 "hover:bg-muted hover:text-foreground",
-                isActive && "bg-muted text-foreground font-medium"
+                isActive && "bg-muted text-foreground font-medium",
               )
             }
           >
-            {item.icon}
-            {!collapsed && <span>{item.label}</span>}
+            <div className="flex items-center gap-3">
+              {item.icon}
+              {!collapsed && <span>{item.label}</span>}
+            </div>
+            {!collapsed && item.badge && (
+              <span
+                className={cn(
+                  "text-xs font-bold px-2 py-0.5 rounded-full whitespace-nowrap ml-auto",
+                  item.badge.variant === "hot"
+                    ? "bg-red-500/20 text-red-600 dark:text-red-400 dark:bg-red-900/40"
+                    : item.badge.variant === "new"
+                      ? "bg-blue-500/20 text-blue-600 dark:text-blue-400 dark:bg-blue-900/40"
+                      : item.badge.variant === "popular"
+                        ? "bg-purple-500/20 text-purple-600 dark:text-purple-400 dark:bg-purple-900/40"
+                        : "bg-amber-500/20 text-amber-600 dark:text-amber-400 dark:bg-amber-900/40",
+                )}
+              >
+                {item.badge.text}
+              </span>
+            )}
           </NavLink>
         ))}
       </nav>
