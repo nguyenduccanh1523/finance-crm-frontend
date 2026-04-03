@@ -238,6 +238,28 @@ export function useBudgets() {
       }
     }, [t]);
 
+  // Get transactions linked to a budget
+  const getLinkedBudgetTransactions = useCallback(
+    async (budgetId: string): Promise<any[]> => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await axiosClient.get<ApiResponse<any[]>>(
+          `/personal/transactions/linked-to-budget/${budgetId}`,
+        );
+        return response.data?.data || [];
+      } catch (err: any) {
+        const errorMsg =
+          err.response?.data?.message || "Failed to fetch linked transactions";
+        setError(errorMsg);
+        return [];
+      } finally {
+        setLoading(false);
+      }
+    },
+    [],
+  );
+
   return {
     loading,
     error,
@@ -247,5 +269,6 @@ export function useBudgets() {
     updateBudget,
     deleteBudget,
     getBudgetsAnalytics,
+    getLinkedBudgetTransactions,
   };
 }

@@ -6,6 +6,7 @@ import {
   Search,
   AlertCircle,
   CheckCircle,
+  Eye,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,6 +29,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { DeleteConfirmDialog } from "@/components/common/DeleteConfirmDialog";
 import { useAppToast } from "@/components/common/toast/useToast";
+import { BudgetDetailDialog } from "@/components/budgets/BudgetDetailDialog";
 import {
   useBudgets,
   type Budget,
@@ -90,6 +92,11 @@ export function BudgetsPage() {
   const [budgetToDelete, setBudgetToDelete] = useState<Budget | null>(null);
   const [budgetToDeleteName, setBudgetToDeleteName] = useState<string>("");
   const [budgetAnalytics, setBudgetAnalytics] = useState<any>(null);
+  const [detailDialogOpen, setDetailDialogOpen] = useState(false);
+  const [selectedDetailBudget, setSelectedDetailBudget] =
+    useState<BudgetAnalytic | null>(null);
+  const [selectedDetailBudgetData, setSelectedDetailBudgetData] =
+    useState<Budget | null>(null);
 
   const [formData, setFormData] = useState<FormData>({
     categoryId: "",
@@ -206,6 +213,13 @@ export function BudgetsPage() {
         setBudgetToDelete(null);
       }
     }
+  };
+
+  const handleViewDetails = (budget: BudgetAnalytic) => {
+    setSelectedDetailBudget(budget);
+    const original = budgets.find((b) => b.id === budget.budgetId);
+    setSelectedDetailBudgetData(original || null);
+    setDetailDialogOpen(true);
   };
 
   return (
@@ -406,6 +420,14 @@ export function BudgetsPage() {
                     variant="outline"
                     size="sm"
                     className="flex-1"
+                    onClick={() => handleViewDetails(budget)}
+                  >
+                    <Eye className="w-4 h-4" />
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex-1"
                     onClick={() => {
                       const original = budgets.find(
                         (b) => b.id === budget.budgetId,
@@ -578,6 +600,14 @@ export function BudgetsPage() {
         itemName={budgetToDeleteName}
         onConfirm={handleConfirmDelete}
         isLoading={loading}
+      />
+
+      {/* BUDGET DETAIL DIALOG */}
+      <BudgetDetailDialog
+        open={detailDialogOpen}
+        onOpenChange={setDetailDialogOpen}
+        budget={selectedDetailBudget}
+        budgetData={selectedDetailBudgetData}
       />
     </div>
   );

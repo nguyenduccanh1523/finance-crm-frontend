@@ -13,6 +13,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useCreateTransaction } from "@/lib/hooks/transactions/useTransactions";
 import { useGetFinanceTags } from "@/lib/hooks/tags/useFinanceTags";
 import { Badge } from "@/components/ui/badge";
+import { TransactionPreviewDialog } from "./TransactionPreviewDialog";
 
 interface CreateTransactionFormProps {
   accounts: Array<{ id: string; name: string; currency: string }>;
@@ -45,6 +46,8 @@ export function CreateTransactionForm({
 
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
   const allTags = [...global, ...workspace];
+  const [previewOpen, setPreviewOpen] = useState(false);
+  const [preparedPayload, setPreparedPayload] = useState<any>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -85,6 +88,57 @@ export function CreateTransactionForm({
         delete payload.exchangeRate;
       }
 
+      // Prepare preview data
+      const selectedCategory = categories.find(
+        (cat) => cat.id === formData.categoryId,
+      );
+      const transferAccount = formData.transferAccountId
+        ? accounts.find((acc) => acc.id === formData.transferAccountId)
+        : null;
+      const selectedTagsList = allTags.filter((tag) =>
+        selectedTags.includes(tag.id),
+      );
+
+      // Format amount for display
+      let amountFormatted: string;
+      if (noDecimalCurrencies.includes(currency)) {
+        amountFormatted = `${amountValue.toLocaleString("vi-VN")} ${currency}`;
+      } else {
+        amountFormatted = `${(amountValue / 100).toLocaleString("vi-VN", {
+          minimumFractionDigits: 2,
+          maximumFractionDigits: 2,
+        })} ${currency}`;
+      }
+
+      setPreparedPayload({
+        ...payload,
+        accountName: selectedAccount?.name,
+        accountCurrency: currency,
+        categoryName: selectedCategory?.name,
+        amountFormatted,
+        transferAccountName: transferAccount?.name,
+        tagNames: selectedTagsList.map((tag) => tag.name),
+      });
+
+      setPreviewOpen(true);
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleConfirmTransaction = async () => {
+    if (!preparedPayload) return;
+
+    try {
+      const payload = { ...preparedPayload };
+      // Remove the display-only fields
+      delete payload.accountName;
+      delete payload.accountCurrency;
+      delete payload.categoryName;
+      delete payload.amountFormatted;
+      delete payload.transferAccountName;
+      delete payload.tagNames;
+
       await createTransaction(payload);
 
       if (onSuccess) onSuccess();
@@ -103,6 +157,8 @@ export function CreateTransactionForm({
         exchangeRate: "1",
       });
       setSelectedTags([]);
+      setPreviewOpen(false);
+      setPreparedPayload(null);
     } catch (err) {
       console.error(err);
     }
@@ -317,6 +373,15 @@ export function CreateTransactionForm({
           Close
         </Button>
       </div>
+
+      {/* TRANSACTION PREVIEW DIALOG */}
+      <TransactionPreviewDialog
+        open={previewOpen}
+        onOpenChange={setPreviewOpen}
+        onConfirm={handleConfirmTransaction}
+        isLoading={loading}
+        transactionData={preparedPayload || {}}
+      />
     </form>
   );
 }
