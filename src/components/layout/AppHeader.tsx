@@ -2,19 +2,30 @@
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useMemo } from "react";
-import { useTranslation } from "react-i18next";
 
 import { useAppDispatch, useAppSelector } from "@/app/store";
-import { setLanguage, setTheme } from "@/app/store/uiSlice";
+import { setTheme } from "@/app/store/uiSlice";
 import { clearUser } from "@/app/store/authSlice";
 
-import { Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/components/ui/breadcrumb";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from "@/components/ui/breadcrumb";
 import { Separator } from "@/components/ui/separator";
-import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from "@/components/ui/dropdown-menu";
+import {
+  DropdownMenu,
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 
-import { Moon, Sun, Globe } from "lucide-react";
+import { Moon, Sun } from "lucide-react";
 import { breadcrumbMap } from "@/app/router/nav-config";
 import { LanguageSwitcher } from "../common/LanguageSwitcher";
 
@@ -24,9 +35,6 @@ export function AppHeader({ section }: { section: "admin" | "app" }) {
   const navigate = useNavigate();
   const user = useAppSelector((s) => s.auth.user);
   const theme = useAppSelector((s) => s.ui.theme);
-  const language = useAppSelector((s) => s.ui.language);
-
-  const { i18n } = useTranslation("common");
 
   const isDark = theme === "dark";
 
@@ -50,33 +58,33 @@ export function AppHeader({ section }: { section: "admin" | "app" }) {
   // ACTIONS
   const toggleTheme = () => dispatch(setTheme(isDark ? "light" : "dark"));
 
-  const toggleLanguage = () => {
-    const next = language === "vi" ? "en" : "vi";
-    dispatch(setLanguage(next));
-    i18n.changeLanguage(next);
-  };
-
   const handleLogout = () => {
     dispatch(clearUser());
     navigate("/auth/login", { replace: true });
   };
 
-  const initials = user?.fullName?.[0]?.toUpperCase() ?? user?.email?.[0]?.toUpperCase() ?? "?";
-  const flag = language === "vi" ? "🇻🇳" : "🇺🇸";
+  const initials =
+    user?.fullName?.[0]?.toUpperCase() ??
+    user?.email?.[0]?.toUpperCase() ??
+    "?";
 
   return (
     <header className="flex h-16 items-center justify-between border-b bg-background/80 px-6 backdrop-blur-md shadow-sm">
-      
       {/* LEFT: BREADCRUMB */}
       <Breadcrumb>
         <BreadcrumbList>
           {crumbs.map((c, idx) => (
             <BreadcrumbItem key={c.path}>
               {c.isCurrent ? (
-                <BreadcrumbPage className="font-medium">{c.label}</BreadcrumbPage>
+                <BreadcrumbPage className="font-medium">
+                  {c.label}
+                </BreadcrumbPage>
               ) : (
                 <>
-                  <Link to={c.path} className="text-muted-foreground hover:text-foreground transition">
+                  <Link
+                    to={c.path}
+                    className="text-muted-foreground hover:text-foreground transition"
+                  >
                     {c.label}
                   </Link>
                   {idx < crumbs.length - 1 && <BreadcrumbSeparator />}
@@ -89,7 +97,6 @@ export function AppHeader({ section }: { section: "admin" | "app" }) {
 
       {/* RIGHT ACTIONS */}
       <div className="flex items-center gap-4">
-
         {/* Theme Switch */}
         <button
           onClick={toggleTheme}
@@ -104,7 +111,6 @@ export function AppHeader({ section }: { section: "admin" | "app" }) {
 
         {/* Language Switch */}
         <LanguageSwitcher />
-
 
         <Separator orientation="vertical" className="h-6" />
 

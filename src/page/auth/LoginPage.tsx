@@ -38,9 +38,9 @@ export function LoginPage() {
   const navigate = useNavigate();
   const pwd = usePasswordToggle();
   const { showSuccess, showError, showInfo } = useAppToast();
-  const { t, i18n } = useTranslation("common");
+  const { t } = useTranslation("common");
 
-  const [successMessage, setSuccessMessage] = useState("");
+  const [successMessage] = useState("");
   const [testData, setTestData] = useState<any>(null);
   const [testLoading, setTestLoading] = useState(false);
   const [testError, setTestError] = useState("");

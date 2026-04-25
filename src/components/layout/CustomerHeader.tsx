@@ -5,21 +5,7 @@ import { clearUser } from "@/app/store/authSlice";
 import { useNavigate, useLocation } from "react-router-dom";
 import { breadcrumbMap } from "@/app/router/nav-config";
 import { LanguageSwitcher } from "@/components/common/LanguageSwitcher";
-import {
-  Moon,
-  Sun,
-  Folder,
-  Tag,
-  Briefcase,
-  CreditCard,
-  LayoutDashboard,
-  Wallet,
-  Receipt,
-  ArrowRight,
-  BookOpen,
-  Zap,
-  Layout,
-} from "lucide-react";
+import { Moon, Sun, ArrowRight, BookOpen, Zap, Layout } from "lucide-react";
 import { setTheme } from "@/app/store/uiSlice";
 
 import {

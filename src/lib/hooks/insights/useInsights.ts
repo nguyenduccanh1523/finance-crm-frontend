@@ -83,7 +83,6 @@ const INSIGHTS_BASE = "/personal/analytics/insights";
 const SUGGESTIONS_BASE = "/personal/analytics/suggestions";
 const ANOMALIES_BASE = "/personal/analytics/anomalies";
 const GAMIFICATION_BASE = "/personal/analytics/gamification";
-const DASHBOARD_BASE = "/personal/analytics/dashboard";
 
 export function useInsights() {
   const [loading, setLoading] = useState(false);

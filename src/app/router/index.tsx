@@ -1,9 +1,5 @@
 // src/app/router/index.tsx
-import {
-  createBrowserRouter,
-  Navigate,
-  RouterProvider,
-} from "react-router-dom";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { AuthLayout } from "@/app/layouts/AuthLayout";
 import { AdminLayout } from "@/app/layouts/AdminLayout";
 import { LoginPage } from "@/page/auth/LoginPage";
@@ -27,6 +23,7 @@ import { RecurringRulesPage } from "@/page/app/recurring-rules";
 import { BudgetsPage } from "@/page/app/budgets";
 import { GoalsPage } from "@/page/app/goals";
 import { InsightsPage } from "@/page/app/insights";
+import ExchangeRatePage from "@/page/app/exchange-rate/ExchangeRatePage";
 
 const router = createBrowserRouter([
   {
@@ -67,6 +64,7 @@ const router = createBrowserRouter([
       { path: "budgets", element: <BudgetsPage /> },
       { path: "goals", element: <GoalsPage /> },
       { path: "insights", element: <InsightsPage /> },
+      { path: "exchange-rate", element: <ExchangeRatePage /> },
       { path: "recurring-rules", element: <RecurringRulesPage /> },
       { path: "categories", element: <CategoryPage /> },
       { path: "tags", element: <TagsPage /> },

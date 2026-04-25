@@ -13,6 +13,7 @@ import {
   PieChart,
   Target,
   Lightbulb,
+  TrendingUp,
 } from "lucide-react";
 
 export type NavItem = {
@@ -76,6 +77,12 @@ export const appNavItems: NavItem[] = [
     label: "💡 Insights",
     path: "/app/insights",
     icon: <Lightbulb className="h-4 w-4" />,
+    badge: { text: "New", variant: "new" },
+  },
+  {
+    label: "💱 Exchange Rate",
+    path: "/app/exchange-rate",
+    icon: <TrendingUp className="h-4 w-4" />,
     badge: { text: "New", variant: "new" },
   },
   {

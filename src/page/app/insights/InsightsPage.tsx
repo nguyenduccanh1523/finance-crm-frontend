@@ -1,7 +1,6 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import {
   Lightbulb,
-  TrendingUp,
   AlertTriangle,
   Zap,
   Award,
@@ -22,19 +21,6 @@ import {
   type Anomaly,
   type Gamification,
 } from "@/lib/hooks/insights/useInsights";
-
-function getInsightIcon(type: string) {
-  switch (type) {
-    case "PATTERN":
-      return "📊";
-    case "ACHIEVEMENT":
-      return "🎉";
-    case "WARNING":
-      return "⚠️";
-    default:
-      return "💡";
-  }
-}
 
 function getSuggestionDifficultyColor(difficulty: string) {
   switch (difficulty) {
@@ -63,13 +49,8 @@ function getPriorityColor(priority: string) {
 }
 
 export function InsightsPage() {
-  const {
-    loading,
-    getInsights,
-    getSuggestions,
-    getAnomalies,
-    getGamification,
-  } = useInsights();
+  const { getInsights, getSuggestions, getAnomalies, getGamification } =
+    useInsights();
   const [insights, setInsights] = useState<Insight[]>([]);
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [anomalies, setAnomalies] = useState<Anomaly[]>([]);
