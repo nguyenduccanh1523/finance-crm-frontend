@@ -6,6 +6,7 @@ import {
   Search,
   AlertCircle,
   CheckCircle,
+  Eye,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -28,6 +29,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { DeleteConfirmDialog } from "@/components/common/DeleteConfirmDialog";
 import { useAppToast } from "@/components/common/toast/useToast";
+import { BudgetDetailDialog } from "@/components/budgets/BudgetDetailDialog";
 import {
   useBudgets,
   type Budget,
@@ -90,6 +92,11 @@ export function BudgetsPage() {
   const [budgetToDelete, setBudgetToDelete] = useState<Budget | null>(null);
   const [budgetToDeleteName, setBudgetToDeleteName] = useState<string>("");
   const [budgetAnalytics, setBudgetAnalytics] = useState<any>(null);
+  const [detailDialogOpen, setDetailDialogOpen] = useState(false);
+  const [selectedDetailBudget, setSelectedDetailBudget] =
+    useState<BudgetAnalytic | null>(null);
+  const [selectedDetailBudgetData, setSelectedDetailBudgetData] =
+    useState<Budget | null>(null);
 
   const [formData, setFormData] = useState<FormData>({
     categoryId: "",
@@ -112,7 +119,7 @@ export function BudgetsPage() {
   const { workspace: categories = [], fetchCategories } =
     useGetFinanceCategories();
   const { accounts = [] } = useGetAccounts();
-  const { showSuccess, showError } = useAppToast();
+  const { showError } = useAppToast();
 
   const [budgets, setBudgets] = useState<Budget[]>([]);
 
@@ -208,6 +215,13 @@ export function BudgetsPage() {
     }
   };
 
+  const handleViewDetails = (budget: BudgetAnalytic) => {
+    setSelectedDetailBudget(budget);
+    const original = budgets.find((b) => b.id === budget.budgetId);
+    setSelectedDetailBudgetData(original || null);
+    setDetailDialogOpen(true);
+  };
+
   return (
     <div className="flex flex-col gap-8">
       {/* HEADER */}
@@ -232,7 +246,7 @@ export function BudgetsPage() {
             <CardContent>
               <div className="text-2xl font-bold">
                 {budgetAnalytics.totalBudgetCents
-                  ? `₫${(budgetAnalytics.totalBudgetCents / 100000).toLocaleString()}`
+                  ? `₫${budgetAnalytics.totalBudgetCents.toLocaleString("vi-VN")}`
                   : "₫0"}
               </div>
               <p className="text-xs text-muted-foreground mt-1">
@@ -252,7 +266,7 @@ export function BudgetsPage() {
             <CardContent>
               <div className="text-2xl font-bold text-red-600">
                 {budgetAnalytics.totalSpentCents
-                  ? `₫${(budgetAnalytics.totalSpentCents / 100000).toLocaleString()}`
+                  ? `₫${budgetAnalytics.totalSpentCents.toLocaleString("vi-VN")}`
                   : "₫0"}
               </div>
               <p className="text-xs text-muted-foreground mt-1">
@@ -270,7 +284,7 @@ export function BudgetsPage() {
             <CardContent>
               <div className="text-2xl font-bold text-green-600">
                 {budgetAnalytics.totalRemainingCents
-                  ? `₫${(budgetAnalytics.totalRemainingCents / 100000).toLocaleString()}`
+                  ? `₫${budgetAnalytics.totalRemainingCents.toLocaleString("vi-VN")}`
                   : "₫0"}
               </div>
               <p className="text-xs text-muted-foreground mt-1">
@@ -402,6 +416,14 @@ export function BudgetsPage() {
 
                 {/* Actions */}
                 <div className="flex gap-2 pt-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="flex-1"
+                    onClick={() => handleViewDetails(budget)}
+                  >
+                    <Eye className="w-4 h-4" />
+                  </Button>
                   <Button
                     variant="outline"
                     size="sm"
@@ -578,6 +600,14 @@ export function BudgetsPage() {
         itemName={budgetToDeleteName}
         onConfirm={handleConfirmDelete}
         isLoading={loading}
+      />
+
+      {/* BUDGET DETAIL DIALOG */}
+      <BudgetDetailDialog
+        open={detailDialogOpen}
+        onOpenChange={setDetailDialogOpen}
+        budget={selectedDetailBudget}
+        budgetData={selectedDetailBudgetData}
       />
     </div>
   );

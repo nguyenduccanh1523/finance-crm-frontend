@@ -26,7 +26,6 @@ import {
   DrawerDescription,
   DrawerHeader,
   DrawerTitle,
-  DrawerTrigger,
 } from "@/components/ui/drawer";
 import {
   Select,
@@ -111,17 +110,13 @@ export function GoalsPage() {
   const [goalToDelete, setGoalToDelete] = useState<Goal | null>(null);
   const [goalToDeleteName, setGoalToDeleteName] = useState<string>("");
   const [goalsAnalytics, setGoalsAnalytics] = useState<GoalAnalytic[]>([]);
-  const [selectedGoalForTransaction, setSelectedGoalForTransaction] =
-    useState<GoalAnalytic | null>(null);
-  const [selectedGoalForHistory, setSelectedGoalForHistory] =
-    useState<GoalAnalytic | null>(null);
   const hasInitialized = useRef(false);
-  const [transactionType, setTransactionType] = useState<
-    "allocate" | "withdraw" | null
-  >(null);
-  const [allocateDrawerOpen, setAllocateDrawerOpen] = useState(false);
-  const [withdrawDrawerOpen, setWithdrawDrawerOpen] = useState(false);
-  const [historyDrawerOpen, setHistoryDrawerOpen] = useState(false);
+
+  // Drawer state - consolidated
+  type DrawerType = "allocate" | "withdraw" | "history" | null;
+  const [activeDrawer, setActiveDrawer] = useState<DrawerType>(null);
+  const [selectedGoalForDrawer, setSelectedGoalForDrawer] =
+    useState<GoalAnalytic | null>(null);
 
   const [formData, setFormData] = useState<FormData>({
     name: "",
@@ -147,7 +142,7 @@ export function GoalsPage() {
     getGoalsAnalytics,
   } = useGoals();
   const { accounts = [] } = useGetAccounts();
-  const { showSuccess, showError } = useAppToast();
+  const { showError } = useAppToast();
 
   const [goals, setGoals] = useState<Goal[]>([]);
 
@@ -246,38 +241,44 @@ export function GoalsPage() {
   };
 
   const handleAllocate = async () => {
-    if (!selectedGoalForTransaction) return;
+    if (!selectedGoalForDrawer) return;
 
-    const original = goals.find(
-      (g) => g.id === selectedGoalForTransaction.goalId,
-    );
+    const original = goals.find((g) => g.id === selectedGoalForDrawer.goalId);
     if (!original) return;
 
     const result = await allocateToGoal(original.id, transactionData);
     if (result) {
       await fetchGoals();
-      setSelectedGoalForTransaction(null);
-      setTransactionType(null);
-      setTransactionData({ amountCents: 0 });
+      resetDrawer();
     }
   };
 
   const handleWithdraw = async () => {
-    if (!selectedGoalForTransaction) return;
+    if (!selectedGoalForDrawer) return;
 
-    const original = goals.find(
-      (g) => g.id === selectedGoalForTransaction.goalId,
-    );
+    const original = goals.find((g) => g.id === selectedGoalForDrawer.goalId);
     if (!original) return;
 
     const result = await withdrawFromGoal(original.id, transactionData);
     if (result) {
       await fetchGoals();
-      setSelectedGoalForTransaction(null);
-      setTransactionType(null);
-      setTransactionData({ amountCents: 0 });
+      resetDrawer();
     }
   };
+
+  const resetDrawer = () => {
+    setActiveDrawer(null);
+    setSelectedGoalForDrawer(null);
+    setTransactionData({ amountCents: 0 });
+  };
+
+  const openDrawer = (type: DrawerType, goal: GoalAnalytic) => {
+    setActiveDrawer(type);
+    setSelectedGoalForDrawer(goal);
+    setTransactionData({ amountCents: 0 });
+  };
+
+  const findGoalById = (goalId: string) => goals.find((g) => g.id === goalId);
 
   // Total goals summary
   const totalGoals = filteredGoals.length;
@@ -410,9 +411,7 @@ export function GoalsPage() {
                         variant="ghost"
                         size="sm"
                         onClick={() => {
-                          const original = goals.find(
-                            (g) => g.id === goal.goalId,
-                          );
+                          const original = findGoalById(goal.goalId);
                           if (original) handleEditGoal(original);
                         }}
                       >
@@ -422,9 +421,7 @@ export function GoalsPage() {
                         variant="ghost"
                         size="sm"
                         onClick={() => {
-                          const original = goals.find(
-                            (g) => g.id === goal.goalId,
-                          );
+                          const original = findGoalById(goal.goalId);
                           if (original) handleDeleteClick(original, goal.name);
                         }}
                       >
@@ -491,151 +488,35 @@ export function GoalsPage() {
 
                     {/* Action Buttons */}
                     <div className="flex gap-2 pt-2 flex-wrap">
-                      <Drawer
-                        open={
-                          allocateDrawerOpen &&
-                          selectedGoalForTransaction?.goalId === goal.goalId
-                        }
-                        onOpenChange={(open) => {
-                          setAllocateDrawerOpen(open);
-                          if (open) {
-                            setSelectedGoalForTransaction(goal);
-                            setTransactionType("allocate");
-                            setTransactionData({ amountCents: 0 });
-                          } else {
-                            setTransactionData({ amountCents: 0 });
-                          }
-                        }}
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="flex-1 gap-2"
+                        onClick={() => openDrawer("allocate", goal)}
                       >
-                        <DrawerTrigger asChild>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="flex-1 gap-2"
-                          >
-                            <Zap className="w-4 h-4" />
-                            Allocate
-                          </Button>
-                        </DrawerTrigger>
-                        <DrawerContent>
-                          <DrawerHeader>
-                            <DrawerTitle>Allocate to {goal.name}</DrawerTitle>
-                            <DrawerDescription>
-                              Transfer money from account to this goal
-                            </DrawerDescription>
-                          </DrawerHeader>
-                          <div className="px-4 py-6">
-                            <AllocationReceipt
-                              type="allocate"
-                              goalName={goal.name}
-                              amount={transactionData.amountCents}
-                              currency="VND"
-                              isLoading={loading}
-                              onAmountChange={(amountCents) =>
-                                setTransactionData({ amountCents })
-                              }
-                              onCancel={() => setAllocateDrawerOpen(false)}
-                              onConfirm={() => {
-                                handleAllocate();
-                                setAllocateDrawerOpen(false);
-                              }}
-                            />
-                          </div>
-                        </DrawerContent>
-                      </Drawer>
+                        <Zap className="w-4 h-4" />
+                        Allocate
+                      </Button>
 
-                      <Drawer
-                        open={
-                          withdrawDrawerOpen &&
-                          selectedGoalForTransaction?.goalId === goal.goalId
-                        }
-                        onOpenChange={(open) => {
-                          setWithdrawDrawerOpen(open);
-                          if (open) {
-                            setSelectedGoalForTransaction(goal);
-                            setTransactionType("withdraw");
-                            setTransactionData({ amountCents: 0 });
-                          } else {
-                            setTransactionData({ amountCents: 0 });
-                          }
-                        }}
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="flex-1 gap-2"
+                        onClick={() => openDrawer("withdraw", goal)}
                       >
-                        <DrawerTrigger asChild>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="flex-1 gap-2"
-                          >
-                            <ChevronRight className="w-4 h-4" />
-                            Withdraw
-                          </Button>
-                        </DrawerTrigger>
-                        <DrawerContent>
-                          <DrawerHeader>
-                            <DrawerTitle>Withdraw from {goal.name}</DrawerTitle>
-                            <DrawerDescription>
-                              Transfer money from goal back to account
-                            </DrawerDescription>
-                          </DrawerHeader>
-                          <div className="px-4 py-6">
-                            <AllocationReceipt
-                              type="withdraw"
-                              goalName={goal.name}
-                              amount={transactionData.amountCents}
-                              currency="VND"
-                              isLoading={loading}
-                              onAmountChange={(amountCents) =>
-                                setTransactionData({ amountCents })
-                              }
-                              onCancel={() => setWithdrawDrawerOpen(false)}
-                              onConfirm={() => {
-                                handleWithdraw();
-                                setWithdrawDrawerOpen(false);
-                              }}
-                            />
-                          </div>
-                        </DrawerContent>
-                      </Drawer>
+                        <ChevronRight className="w-4 h-4" />
+                        Withdraw
+                      </Button>
 
-                      <Drawer
-                        open={
-                          historyDrawerOpen &&
-                          selectedGoalForHistory?.goalId === goal.goalId
-                        }
-                        onOpenChange={(open) => {
-                          setHistoryDrawerOpen(open);
-                          if (open) {
-                            setSelectedGoalForHistory(goal);
-                          }
-                        }}
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="flex-1 gap-2"
+                        onClick={() => openDrawer("history", goal)}
                       >
-                        <DrawerTrigger asChild>
-                          <Button
-                            variant="outline"
-                            size="sm"
-                            className="flex-1 gap-2"
-                          >
-                            <BarChart3 className="w-4 h-4" />
-                            History
-                          </Button>
-                        </DrawerTrigger>
-                        <DrawerContent className="max-h-[80vh] overflow-y-auto">
-                          <DrawerHeader>
-                            <DrawerTitle>Transaction History</DrawerTitle>
-                            <DrawerDescription>
-                              View all allocations and withdrawals for this goal
-                            </DrawerDescription>
-                          </DrawerHeader>
-                          <div className="px-4 pb-6">
-                            {selectedGoalForHistory && (
-                              <GoalTransactionHistory
-                                goalId={selectedGoalForHistory.goalId}
-                                goalName={selectedGoalForHistory.name}
-                              />
-                            )}
-                          </div>
-                        </DrawerContent>
-                      </Drawer>
+                        <BarChart3 className="w-4 h-4" />
+                        History
+                      </Button>
                     </div>
                   </div>
                 </CardContent>
@@ -778,6 +659,94 @@ export function GoalsPage() {
         onConfirm={handleConfirmDelete}
         isLoading={loading}
       />
+
+      {/* CONSOLIDATED DRAWER */}
+      <Drawer
+        open={activeDrawer !== null}
+        onOpenChange={(open) => {
+          if (!open) resetDrawer();
+        }}
+      >
+        <DrawerContent className="max-h-[90vh] overflow-hidden flex flex-col">
+          {activeDrawer === "allocate" && selectedGoalForDrawer && (
+            <>
+              <DrawerHeader>
+                <DrawerTitle>
+                  Allocate to {selectedGoalForDrawer.name}
+                </DrawerTitle>
+                <DrawerDescription>
+                  Transfer money from account to this goal
+                </DrawerDescription>
+              </DrawerHeader>
+              <div className="flex-1 overflow-y-auto px-4 py-6">
+                <AllocationReceipt
+                  type="allocate"
+                  goalName={selectedGoalForDrawer.name}
+                  amount={transactionData.amountCents}
+                  currency="VND"
+                  isLoading={loading}
+                  onAmountChange={(amountCents) =>
+                    setTransactionData({ amountCents })
+                  }
+                  onCancel={() => resetDrawer()}
+                  onConfirm={() => {
+                    handleAllocate();
+                    resetDrawer();
+                  }}
+                />
+              </div>
+            </>
+          )}
+
+          {activeDrawer === "withdraw" && selectedGoalForDrawer && (
+            <>
+              <DrawerHeader>
+                <DrawerTitle>
+                  Withdraw from {selectedGoalForDrawer.name}
+                </DrawerTitle>
+                <DrawerDescription>
+                  Transfer money from goal back to account
+                </DrawerDescription>
+              </DrawerHeader>
+              <div className="flex-1 overflow-y-auto px-4 py-6">
+                <AllocationReceipt
+                  type="withdraw"
+                  goalName={selectedGoalForDrawer.name}
+                  amount={transactionData.amountCents}
+                  currency="VND"
+                  isLoading={loading}
+                  onAmountChange={(amountCents) =>
+                    setTransactionData({ amountCents })
+                  }
+                  onCancel={() => resetDrawer()}
+                  onConfirm={() => {
+                    handleWithdraw();
+                    resetDrawer();
+                  }}
+                />
+              </div>
+            </>
+          )}
+
+          {activeDrawer === "history" && selectedGoalForDrawer && (
+            <>
+              <DrawerHeader>
+                <DrawerTitle>📊 Transaction History</DrawerTitle>
+                <DrawerDescription>
+                  View all allocations and withdrawals for{" "}
+                  {selectedGoalForDrawer.name}
+                </DrawerDescription>
+              </DrawerHeader>
+              <div className="flex-1 overflow-y-auto px-4 py-6">
+                <GoalTransactionHistory
+                  goalId={selectedGoalForDrawer.goalId}
+                  goalName={selectedGoalForDrawer.name}
+                />
+              </div>
+            </>
+          )}
+        </DrawerContent>
+      </Drawer>
     </div>
   );
 }
