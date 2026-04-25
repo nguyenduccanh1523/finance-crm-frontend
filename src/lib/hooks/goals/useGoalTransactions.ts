@@ -23,8 +23,7 @@ export interface GoalTransaction {
 interface ApiResponse<T> {
   statusCode: number;
   message: string;
-  goalId: string;
-  transactions: T[];
+  data: T[];
 }
 
 const API_BASE = "/personal/transactions/linked-to-goal";
@@ -42,7 +41,8 @@ export function useGoalTransactions() {
         const response = await axiosClient.get<ApiResponse<GoalTransaction>>(
           `${API_BASE}/${goalId}`,
         );
-        return response.data?.transactions || [];
+        // Data is wrapped in response.data.data, not response.data.transactions
+        return response.data?.data || [];
       } catch (err: any) {
         const errorMsg =
           err.response?.data?.message || "Failed to fetch goal transactions";

@@ -42,9 +42,6 @@ export function AllocationReceipt({
     }
   }, [amount]);
 
-  // Format display amount
-  const displayAmount = amount > 0 ? amount.toFixed(2) : "0.00";
-
   const isAllocate = type === "allocate";
   const icon = isAllocate ? (
     <ArrowDownLeft className="w-6 h-6" />
@@ -200,20 +197,65 @@ export function AllocationReceipt({
 
   return (
     <div className="space-y-4">
-      <div>
-        <label className="text-sm font-medium">Amount ({currency})</label>
-        <Input
-          type="number"
-          min="0"
-          step="0.01"
-          placeholder="Enter amount"
-          value={inputValue}
-          onChange={handleAmountInput}
-          disabled={isLoading}
-          className="text-lg font-semibold"
-        />
+      {/* Header */}
+      <div className="mb-6">
+        <div className="flex items-center gap-3 mb-2">
+          <div
+            className={`p-3 rounded-lg ${
+              isAllocate
+                ? "bg-green-100 dark:bg-green-900"
+                : "bg-blue-100 dark:bg-blue-900"
+            }`}
+          >
+            {icon}
+          </div>
+          <div>
+            <h3 className="text-xl font-bold">{titleText}</h3>
+            <p className="text-sm text-muted-foreground">{descText}</p>
+          </div>
+        </div>
       </div>
 
+      {/* Input Section */}
+      <Card className="border-2">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base">Amount ({currency})</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <Input
+            type="number"
+            min="0"
+            step="0.01"
+            placeholder="Enter amount"
+            value={inputValue}
+            onChange={handleAmountInput}
+            disabled={isLoading}
+            className="text-2xl font-bold py-6"
+          />
+          {amount > 0 && (
+            <p className="text-sm text-muted-foreground mt-2">
+              Amount:{" "}
+              {amount.toLocaleString("en-US", {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2,
+              })}{" "}
+              {currency}
+            </p>
+          )}
+        </CardContent>
+      </Card>
+
+      {/* Warning */}
+      {amount > 0 && (
+        <div className="bg-amber-50 dark:bg-amber-950/20 border border-amber-200 dark:border-amber-800 p-3 rounded-lg flex gap-2">
+          <AlertCircle className="w-4 h-4 text-amber-600 mt-0.5 flex-shrink-0" />
+          <p className="text-sm text-amber-700 dark:text-amber-100">
+            Please review the details carefully before confirming.
+          </p>
+        </div>
+      )}
+
+      {/* Action Buttons */}
       <div className="flex gap-2">
         <Button
           variant="outline"

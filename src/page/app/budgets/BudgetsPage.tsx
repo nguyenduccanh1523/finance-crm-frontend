@@ -119,7 +119,7 @@ export function BudgetsPage() {
   const { workspace: categories = [], fetchCategories } =
     useGetFinanceCategories();
   const { accounts = [] } = useGetAccounts();
-  const { showSuccess, showError } = useAppToast();
+  const { showError } = useAppToast();
 
   const [budgets, setBudgets] = useState<Budget[]>([]);
 
@@ -246,7 +246,7 @@ export function BudgetsPage() {
             <CardContent>
               <div className="text-2xl font-bold">
                 {budgetAnalytics.totalBudgetCents
-                  ? `₫${(budgetAnalytics.totalBudgetCents / 100000).toLocaleString()}`
+                  ? `₫${budgetAnalytics.totalBudgetCents.toLocaleString("vi-VN")}`
                   : "₫0"}
               </div>
               <p className="text-xs text-muted-foreground mt-1">
@@ -266,7 +266,7 @@ export function BudgetsPage() {
             <CardContent>
               <div className="text-2xl font-bold text-red-600">
                 {budgetAnalytics.totalSpentCents
-                  ? `₫${(budgetAnalytics.totalSpentCents / 100000).toLocaleString()}`
+                  ? `₫${budgetAnalytics.totalSpentCents.toLocaleString("vi-VN")}`
                   : "₫0"}
               </div>
               <p className="text-xs text-muted-foreground mt-1">
@@ -284,7 +284,7 @@ export function BudgetsPage() {
             <CardContent>
               <div className="text-2xl font-bold text-green-600">
                 {budgetAnalytics.totalRemainingCents
-                  ? `₫${(budgetAnalytics.totalRemainingCents / 100000).toLocaleString()}`
+                  ? `₫${budgetAnalytics.totalRemainingCents.toLocaleString("vi-VN")}`
                   : "₫0"}
               </div>
               <p className="text-xs text-muted-foreground mt-1">

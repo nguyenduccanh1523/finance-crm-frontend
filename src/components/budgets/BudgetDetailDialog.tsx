@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import {
   Dialog,
   DialogContent,
@@ -44,25 +44,25 @@ export function BudgetDetailDialog({
 
   const accountInfo = accounts.find((acc) => acc.id === budgetData?.accountId);
 
-  useEffect(() => {
-    if (open && budget) {
-      loadTransactions();
-    }
-  }, [open, budget?.budgetId]);
-
-  const loadTransactions = async () => {
+  const loadTransactions = useCallback(async () => {
     if (!budget?.budgetId) return;
     setLoading(true);
     try {
       const data = await getLinkedBudgetTransactions(budget.budgetId);
-      setTransactions(data);
+      setTransactions(data || []);
     } catch (err) {
       console.error("Failed to load transactions:", err);
       setTransactions([]);
     } finally {
       setLoading(false);
     }
-  };
+  }, [budget?.budgetId, getLinkedBudgetTransactions]);
+
+  useEffect(() => {
+    if (open && budget?.budgetId) {
+      loadTransactions();
+    }
+  }, [open, budget?.budgetId, loadTransactions]);
 
   const formatCurrency = (amountCents: string | number, currency: string) => {
     const noDecimalCurrencies = ["VND", "JPY", "KRW", "PHP", "IDR", "THB"];
@@ -189,7 +189,7 @@ export function BudgetDetailDialog({
                     <p className="text-muted-foreground">Balance</p>
                     <p className="font-medium">
                       {formatCurrency(
-                        accountInfo.currentBalanceCents,
+                        accountInfo.currentBalanceCents || 0,
                         accountInfo.currency,
                       )}
                     </p>

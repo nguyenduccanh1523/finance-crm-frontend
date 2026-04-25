@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -23,7 +24,6 @@ type FilterType = "all" | "allocations" | "withdrawals";
 
 export function GoalTransactionHistory({
   goalId,
-  goalName,
 }: GoalTransactionHistoryProps) {
   const [transactions, setTransactions] = useState<GoalTransaction[]>([]);
   const [filterType, setFilterType] = useState<FilterType>("all");
@@ -32,9 +32,10 @@ export function GoalTransactionHistory({
   useEffect(() => {
     const fetchTransactions = async () => {
       const data = await getGoalTransactions(goalId);
-      setTransactions(data);
+      setTransactions(data || []);
     };
     fetchTransactions();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [goalId]);
 
   const allocations = transactions.filter((t) => t.type === "GOAL_ALLOCATION");
@@ -75,85 +76,170 @@ export function GoalTransactionHistory({
     if (txns.length === 0) {
       return (
         <div className="text-center py-8 text-muted-foreground">
-          No transactions yet
+          <p className="text-sm">No transactions in this filter</p>
         </div>
       );
     }
 
     return (
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead className="w-[200px]">Date</TableHead>
-            <TableHead>Account</TableHead>
-            <TableHead className="text-right">Amount</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {txns.map((tx) => (
-            <TableRow key={tx.id}>
-              <TableCell className="text-sm">
-                {formatDate(tx.createdAt)}
-              </TableCell>
-              <TableCell>{tx.account.name}</TableCell>
-              <TableCell className="text-right font-medium">
-                {formatAmount(tx.amountCents, tx.currency)}
-              </TableCell>
+      <div className="overflow-x-auto">
+        <Table>
+          <TableHeader>
+            <TableRow className="hover:bg-transparent">
+              <TableHead className="text-xs font-semibold">Date</TableHead>
+              <TableHead className="text-xs font-semibold">Account</TableHead>
+              <TableHead className="text-xs font-semibold">Type</TableHead>
+              <TableHead className="text-right text-xs font-semibold">
+                Amount
+              </TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {txns.map((tx, idx) => (
+              <TableRow
+                key={tx.id}
+                className={idx % 2 === 0 ? "bg-muted/30" : ""}
+              >
+                <TableCell className="text-sm text-muted-foreground py-3">
+                  {formatDate(tx.createdAt)}
+                </TableCell>
+                <TableCell className="text-sm font-medium">
+                  {tx.account.name}
+                </TableCell>
+                <TableCell className="text-sm">
+                  {tx.type === "GOAL_ALLOCATION" ? (
+                    <div className="flex items-center gap-1 text-green-600">
+                      <ArrowDownLeft className="w-3 h-3" />
+                      <span>Allocate</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-1 text-blue-600">
+                      <ArrowUpRight className="w-3 h-3" />
+                      <span>Withdraw</span>
+                    </div>
+                  )}
+                </TableCell>
+                <TableCell className="text-right font-semibold text-sm">
+                  {tx.type === "GOAL_ALLOCATION" ? (
+                    <span className="text-green-600">
+                      +{formatAmount(tx.amountCents, tx.currency)}
+                    </span>
+                  ) : (
+                    <span className="text-blue-600">
+                      -{formatAmount(tx.amountCents, tx.currency)}
+                    </span>
+                  )}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     );
   };
 
   return (
-    <div className="w-full">
+    <div className="w-full space-y-6">
       {loading ? (
-        <div className="text-center py-8 text-muted-foreground flex items-center justify-center gap-2">
-          <Loader2 className="w-4 h-4 animate-spin" />
-          Loading transactions...
+        <div className="text-center py-12 text-muted-foreground flex flex-col items-center justify-center gap-3">
+          <Loader2 className="w-6 h-6 animate-spin" />
+          <p>Loading transactions...</p>
         </div>
       ) : transactions.length === 0 ? (
-        <div className="text-center py-8 text-muted-foreground">
-          No allocations or withdrawals yet
-        </div>
+        <Card className="border-dashed">
+          <CardContent className="text-center py-12">
+            <div className="text-muted-foreground mb-2">💰</div>
+            <p className="text-muted-foreground">
+              No allocations or withdrawals yet
+            </p>
+            <p className="text-sm text-muted-foreground mt-1">
+              Start by allocating funds to this goal
+            </p>
+          </CardContent>
+        </Card>
       ) : (
-        <div className="space-y-4">
-          {/* Filter Buttons */}
-          <div className="flex gap-2 flex-wrap">
-            <Button
-              variant={filterType === "all" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setFilterType("all")}
-              className="text-xs sm:text-sm"
-            >
-              All ({transactions.length})
-            </Button>
-            <Button
-              variant={filterType === "allocations" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setFilterType("allocations")}
-              className="text-xs sm:text-sm gap-1"
-            >
-              <ArrowDownLeft className="w-4 h-4" />
-              In ({allocations.length})
-            </Button>
-            <Button
-              variant={filterType === "withdrawals" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setFilterType("withdrawals")}
-              className="text-xs sm:text-sm gap-1"
-            >
-              <ArrowUpRight className="w-4 h-4" />
-              Out ({withdrawals.length})
-            </Button>
+        <>
+          {/* Statistics Cards */}
+          <div className="grid grid-cols-3 gap-3">
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-xs text-muted-foreground">
+                  Total In
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-lg font-bold text-green-600 flex items-center gap-1">
+                  <ArrowDownLeft className="w-4 h-4" />+{allocations.length}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-xs text-muted-foreground">
+                  Total Out
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-lg font-bold text-blue-600 flex items-center gap-1">
+                  <ArrowUpRight className="w-4 h-4" />-{withdrawals.length}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="pb-2">
+                <CardTitle className="text-xs text-muted-foreground">
+                  Total
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="text-lg font-bold text-indigo-600">
+                  {transactions.length}
+                </div>
+              </CardContent>
+            </Card>
           </div>
 
-          {/* Transactions Table */}
-          <div className="border rounded-lg overflow-hidden">
-            {transactionContent(filteredTransactions)}
+          {/* Filter Buttons */}
+          <div className="space-y-4">
+            <div className="flex gap-2 flex-wrap">
+              <Button
+                variant={filterType === "all" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setFilterType("all")}
+                className="text-xs"
+              >
+                All ({transactions.length})
+              </Button>
+              <Button
+                variant={filterType === "allocations" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setFilterType("allocations")}
+                className="text-xs gap-1"
+              >
+                <ArrowDownLeft className="w-3 h-3" />
+                Allocate ({allocations.length})
+              </Button>
+              <Button
+                variant={filterType === "withdrawals" ? "default" : "outline"}
+                size="sm"
+                onClick={() => setFilterType("withdrawals")}
+                className="text-xs gap-1"
+              >
+                <ArrowUpRight className="w-3 h-3" />
+                Withdraw ({withdrawals.length})
+              </Button>
+            </div>
+
+            {/* Transactions Card */}
+            <Card>
+              <CardContent className="p-0">
+                {transactionContent(filteredTransactions)}
+              </CardContent>
+            </Card>
           </div>
-        </div>
+        </>
       )}
     </div>
   );
