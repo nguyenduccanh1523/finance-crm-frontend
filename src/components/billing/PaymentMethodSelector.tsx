@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useTranslation } from "react-i18next";
-import { CreditCard, AlertCircle } from "lucide-react";
+import { AlertCircle } from "lucide-react";
 
 export type PaymentMethod = "card" | "momo" | "zalopay" | "shopeepay";
 

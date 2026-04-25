@@ -14,7 +14,6 @@ import { AppButton } from "@/components/common/AppButton";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -146,13 +145,12 @@ export function StripeCardForm({
 
         // Bước 3: Xử lý paymentClientSecret nếu có
         if (subscriptionResult.paymentClientSecret) {
-          const { paymentIntent, error: paymentError } =
-            await stripe.confirmCardPayment(
-              subscriptionResult.paymentClientSecret,
-              {
-                payment_method: paymentMethodId,
-              },
-            );
+          const { error: paymentError } = await stripe.confirmCardPayment(
+            subscriptionResult.paymentClientSecret,
+            {
+              payment_method: paymentMethodId,
+            },
+          );
 
           if (paymentError) {
             setCardError(paymentError.message || "Payment failed");

@@ -13,6 +13,7 @@ import {
   PieChart,
   Target,
   Lightbulb,
+  TrendingUp,
 } from "lucide-react";
 
 export type NavItem = {
@@ -79,6 +80,12 @@ export const appNavItems: NavItem[] = [
     badge: { text: "New", variant: "new" },
   },
   {
+    label: "💱 Exchange Rate",
+    path: "/app/exchange-rate",
+    icon: <TrendingUp className="h-4 w-4" />,
+    badge: { text: "New", variant: "new" },
+  },
+  {
     label: "Recurring Rules",
     path: "/app/recurring-rules",
     icon: <Calendar className="h-4 w-4" />,
@@ -134,4 +141,5 @@ export const breadcrumbMap: Record<string, string> = {
   "/app/personal-workspace": "Personal Workspace",
   "/app/account": "Account",
   "/app/billing": "Pricing",
+  "/app/exchange-rate": "Exchange Rate",
 };

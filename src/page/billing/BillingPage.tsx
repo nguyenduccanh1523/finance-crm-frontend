@@ -15,7 +15,7 @@ type PeriodType = "monthly" | "annual";
 
 interface DrawerState {
   isOpen: boolean;
-  planCode: "starter" | "pro" | "enterprise" | "community";
+  planCode: "starter" | "pro" | "enterprise";
   plan: any;
 }
 
@@ -109,18 +109,12 @@ export function BillingPage() {
                 priceLabel={priceLabel}
                 alternativePrice={alternativePrice}
                 icon={getIconForTier(tier)}
-                planCode={
-                  tier as "starter" | "pro" | "enterprise" | "community"
-                }
+                planCode={tier as "starter" | "pro" | "enterprise"}
                 interval={activePeriod === "monthly" ? "MONTH" : "YEAR"}
-                onGetStarted={(planCode, interval) => {
+                onGetStarted={(planCode) => {
                   setDrawerState({
                     isOpen: true,
-                    planCode: planCode as
-                      | "starter"
-                      | "pro"
-                      | "enterprise"
-                      | "community",
+                    planCode: planCode as "starter" | "pro" | "enterprise",
                     plan: plan,
                   });
                 }}

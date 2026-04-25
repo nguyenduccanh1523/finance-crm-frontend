@@ -4,11 +4,9 @@ import { useState, useEffect, useRef, useMemo } from "react";
 import { useTranslation } from "react-i18next";
 import { loadStripe } from "@stripe/stripe-js";
 import { Elements } from "@stripe/react-stripe-js";
-import { X } from "lucide-react";
 import { ENV } from "@/app/config/env";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -113,7 +111,7 @@ export function PaymentDrawer({
     // TODO: Redirect hoặc show success message
   };
 
-  const handlePaymentError = (error: string) => {
+  const handlePaymentError = () => {
     // Error sẽ được hiển thị trong form
   };
 
