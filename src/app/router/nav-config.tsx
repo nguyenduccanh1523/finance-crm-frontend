@@ -141,4 +141,5 @@ export const breadcrumbMap: Record<string, string> = {
   "/app/personal-workspace": "Personal Workspace",
   "/app/account": "Account",
   "/app/billing": "Pricing",
+  "/app/exchange-rate": "Exchange Rate",
 };

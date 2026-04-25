@@ -24,6 +24,7 @@ import { BudgetsPage } from "@/page/app/budgets";
 import { GoalsPage } from "@/page/app/goals";
 import { InsightsPage } from "@/page/app/insights";
 import ExchangeRatePage from "@/page/app/exchange-rate/ExchangeRatePage";
+import { DocumentationPage } from "@/page/docs/DocumentationPage";
 
 const router = createBrowserRouter([
   {
@@ -33,6 +34,11 @@ const router = createBrowserRouter([
       { path: "login", element: <LoginPage /> },
       { path: "register", element: <RegisterPage /> },
     ],
+  },
+  // ===== DOCUMENTATION =====
+  {
+    path: "/docs",
+    element: <DocumentationPage />,
   },
   // ===== ADMIN =====
   {

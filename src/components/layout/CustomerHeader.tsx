@@ -5,7 +5,16 @@ import { clearUser } from "@/app/store/authSlice";
 import { useNavigate, useLocation } from "react-router-dom";
 import { breadcrumbMap } from "@/app/router/nav-config";
 import { LanguageSwitcher } from "@/components/common/LanguageSwitcher";
-import { Moon, Sun, ArrowRight, BookOpen, Zap, Layout } from "lucide-react";
+import { NotificationDropdown } from "@/components/common/NotificationDropdown";
+import {
+  Moon,
+  Sun,
+  ArrowRight,
+  BookOpen,
+  Zap,
+  Layout,
+  HelpCircle,
+} from "lucide-react";
 import { setTheme } from "@/app/store/uiSlice";
 
 import {
@@ -38,24 +47,30 @@ interface NavSection {
 
 const navSections: NavSection[] = [
   {
-    title: "Docs",
+    title: "Documentation",
     items: [
       {
         label: "Getting Started",
-        description: "Quick start guide and setup instructions",
+        description: "Quick setup guide and first steps",
         icon: <Zap size={20} />,
-        path: "/docs/getting-started",
+        path: "/docs",
       },
       {
-        label: "Components",
-        description: "Reusable components built with Tailwind CSS",
+        label: "Features Guide",
+        description: "Learn about all Finance CRM features",
         icon: <Layout size={20} />,
-        path: "/docs/components",
+        path: "/docs",
       },
       {
-        label: "Documentation",
-        description: "Complete API reference and guides",
+        label: "API Documentation",
+        description: "API reference and integration guides",
         icon: <BookOpen size={20} />,
+        path: "/docs",
+      },
+      {
+        label: "AI & Integrations",
+        description: "Advanced AI features and Agent API",
+        icon: <HelpCircle size={20} />,
         path: "/docs",
       },
     ],
@@ -190,6 +205,9 @@ export function CustomerHeader() {
               <Moon className="h-5 w-5 text-gray-700" />
             )}
           </button>
+
+          {/* Notification Dropdown */}
+          <NotificationDropdown />
 
           {/* Language */}
           <LanguageSwitcher />
