@@ -16,6 +16,7 @@ import { UserHomePage } from "@/page/app/user/UserHomePage";
 import { TransactionsPage } from "@/page/app/transactions/TransactionsPage";
 import { AdminAnalyticsPage } from "@/page/admin/AdminAnalyticsPage";
 import { NoPermissionPage } from "@/page/system/NoPermissionPage";
+import { UnauthorizedPage } from "@/page/system/UnauthorizedPage";
 import { NotFoundPage } from "@/page/system/NotFoundPage";
 import { AdminDashboardPage } from "@/page/admin/AdminDashBoardPage";
 import { BillingPage } from "@/page/billing/BillingPage";
@@ -114,7 +115,7 @@ const router = createBrowserRouter([
     ],
   },
 
-  // DEFAULT: redirect
+  // DEFAULT: error pages
   {
     path: "/403",
     element: <NoPermissionPage />,

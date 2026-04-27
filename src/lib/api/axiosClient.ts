@@ -36,15 +36,39 @@ axiosClient.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
+    const url = originalRequest.url || "";
 
-    if (error.response?.status !== 401 || originalRequest._retry) {
+    console.log(
+      "🔴 axiosClient error interceptor:",
+      error.response?.status,
+      "url:",
+      url,
+    );
+
+    // 🔥 Nếu /auth/refresh fail 401 → reject ngay (bỏ qua logic retry)
+    if (url.includes("/auth/refresh") && error.response?.status === 401) {
+      console.log("🔴 /auth/refresh failed 401 - rejecting immediately");
+      store.dispatch(clearUser());
       return Promise.reject(error);
     }
 
+    // 🔥 Nếu 401 và đã retry rồi → logout
+    if (error.response?.status === 401 && originalRequest._retry) {
+      console.log("🔴 401 with _retry flag - rejecting after clearUser");
+      store.dispatch(clearUser());
+      return Promise.reject(error);
+    }
+
+    if (error.response?.status !== 401) {
+      return Promise.reject(error);
+    }
+
+    console.log("📍 401 error - trying to refresh token");
     // đánh dấu retry để tránh loop vô hạn
     originalRequest._retry = true;
 
     if (isRefreshing) {
+      console.log("📍 Already refreshing - queuing request");
       // chờ refresh xong rồi retry
       return new Promise((resolve, reject) => {
         addPendingRequest(() => {
@@ -56,18 +80,27 @@ axiosClient.interceptors.response.use(
     isRefreshing = true;
 
     try {
+      console.log("🔄 Attempting to refresh token...");
       // Gọi API refresh (cookie refresh token nằm trong HttpOnly cookie)
       const refreshRes = await axiosClient.post("/auth/refresh");
       const user = refreshRes.data?.user;
       if (user) {
+        console.log("✅ Token refreshed successfully");
         store.dispatch(setUser(user));
       }
 
       runPendingRequests();
       return axiosClient(originalRequest);
     } catch (refreshError) {
+      console.log("🔄 axiosClient interceptor: /auth/refresh failed");
+      console.log("📍 axiosClient interceptor: Dispatching clearUser now...");
       store.dispatch(clearUser());
+      // ✅ Check Redux state after dispatch
+      const state = store.getState();
+      console.log("🔍 Redux state after clearUser:", state.auth);
+      console.log("✅ axiosClient interceptor: clearUser dispatched");
       runPendingRequests();
+      console.log("🔴 axiosClient interceptor: Rejecting error...");
       return Promise.reject(refreshError);
     } finally {
       isRefreshing = false;

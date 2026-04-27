@@ -5,7 +5,7 @@ import { useMemo } from "react";
 
 import { useAppDispatch, useAppSelector } from "@/app/store";
 import { setTheme } from "@/app/store/uiSlice";
-import { clearUser } from "@/app/store/authSlice";
+import { useLogout } from "@/lib/hooks/auth/useLogout";
 
 import {
   Breadcrumb,
@@ -31,10 +31,11 @@ import { LanguageSwitcher } from "../common/LanguageSwitcher";
 
 export function AppHeader({ section }: { section: "admin" | "app" }) {
   const { pathname } = useLocation();
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const user = useAppSelector((s) => s.auth.user);
   const theme = useAppSelector((s) => s.ui.theme);
+  const { logout } = useLogout();
 
   const isDark = theme === "dark";
 
@@ -53,15 +54,12 @@ export function AppHeader({ section }: { section: "admin" | "app" }) {
       { label: rootLabel, path: root, isCurrent: false },
       { label, path: pathname, isCurrent: true },
     ];
-  }, [pathname]);
+  }, [pathname, section]);
 
   // ACTIONS
   const toggleTheme = () => dispatch(setTheme(isDark ? "light" : "dark"));
 
-  const handleLogout = () => {
-    dispatch(clearUser());
-    navigate("/auth/login", { replace: true });
-  };
+  const handleLogout = () => logout();
 
   const initials =
     user?.fullName?.[0]?.toUpperCase() ??
