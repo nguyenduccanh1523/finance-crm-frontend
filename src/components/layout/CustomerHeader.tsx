@@ -1,8 +1,8 @@
 "use client";
 
 import { useAppSelector, useAppDispatch } from "@/app/store";
-import { clearUser } from "@/app/store/authSlice";
 import { useNavigate, useLocation } from "react-router-dom";
+import { useLogout } from "@/lib/hooks/auth/useLogout";
 import { breadcrumbMap } from "@/app/router/nav-config";
 import { LanguageSwitcher } from "@/components/common/LanguageSwitcher";
 import { NotificationDropdown } from "@/components/common/NotificationDropdown";
@@ -83,6 +83,7 @@ export function CustomerHeader() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+  const { logout } = useLogout();
 
   const initials =
     user?.fullName?.[0]?.toUpperCase() ??
@@ -239,10 +240,7 @@ export function CustomerHeader() {
 
               <DropdownMenuSeparator />
               <DropdownMenuItem
-                onClick={() => {
-                  dispatch(clearUser());
-                  navigate("/auth/login");
-                }}
+                onClick={logout}
                 className="text-red-500 dark:text-red-400"
               >
                 Logout

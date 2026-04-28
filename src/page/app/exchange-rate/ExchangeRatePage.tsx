@@ -1,8 +1,21 @@
 import { ExchangeRateConverter } from "@/components/exchange-rate/ExchangeRateConverter";
 import { AppCard } from "@/components/common/AppCard";
 import { Globe2, Zap, Search } from "lucide-react";
+import { useNavigate } from "react-router-dom";
+
+const DOC_LINKS = {
+  providers: "/docs/finance/exchange-rate",
+  realTime: "/docs/finance/exchange-rate",
+  search: "/docs/finance/features",
+} as const;
 
 export default function ExchangeRatePage() {
+  const navigate = useNavigate();
+
+  const handleLearnMore = (docPath: string) => {
+    navigate(docPath);
+  };
+
   return (
     <div className="flex flex-col gap-8">
       <div className="flex flex-col gap-2">
@@ -35,7 +48,10 @@ export default function ExchangeRatePage() {
                   Get rates from ECB, BAM, and other reliable sources
                 </p>
               </div>
-              <div className="pt-2 flex items-center gap-2 text-blue-600 dark:text-blue-400 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
+              <div
+                className="pt-2 flex items-center gap-2 text-blue-600 dark:text-blue-400 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+                onClick={() => handleLearnMore(DOC_LINKS.providers)}
+              >
                 <span>Learn more</span>
                 <span>→</span>
               </div>
@@ -60,7 +76,10 @@ export default function ExchangeRatePage() {
                   Instant conversion with live market rates
                 </p>
               </div>
-              <div className="pt-2 flex items-center gap-2 text-green-600 dark:text-green-400 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
+              <div
+                className="pt-2 flex items-center gap-2 text-green-600 dark:text-green-400 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+                onClick={() => handleLearnMore(DOC_LINKS.realTime)}
+              >
                 <span>Learn more</span>
                 <span>→</span>
               </div>
@@ -85,7 +104,10 @@ export default function ExchangeRatePage() {
                   Find any currency with intuitive search
                 </p>
               </div>
-              <div className="pt-2 flex items-center gap-2 text-purple-600 dark:text-purple-400 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
+              <div
+                className="pt-2 flex items-center gap-2 text-purple-600 dark:text-purple-400 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer"
+                onClick={() => handleLearnMore(DOC_LINKS.search)}
+              >
                 <span>Learn more</span>
                 <span>→</span>
               </div>

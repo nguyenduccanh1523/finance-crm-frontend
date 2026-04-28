@@ -1,5 +1,9 @@
 // src/app/router/index.tsx
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  RouterProvider,
+  Navigate,
+} from "react-router-dom";
 import { AuthLayout } from "@/app/layouts/AuthLayout";
 import { AdminLayout } from "@/app/layouts/AdminLayout";
 import { LoginPage } from "@/page/auth/LoginPage";
@@ -12,6 +16,7 @@ import { UserHomePage } from "@/page/app/user/UserHomePage";
 import { TransactionsPage } from "@/page/app/transactions/TransactionsPage";
 import { AdminAnalyticsPage } from "@/page/admin/AdminAnalyticsPage";
 import { NoPermissionPage } from "@/page/system/NoPermissionPage";
+import { UnauthorizedPage } from "@/page/system/UnauthorizedPage";
 import { NotFoundPage } from "@/page/system/NotFoundPage";
 import { AdminDashboardPage } from "@/page/admin/AdminDashBoardPage";
 import { BillingPage } from "@/page/billing/BillingPage";
@@ -24,7 +29,17 @@ import { BudgetsPage } from "@/page/app/budgets";
 import { GoalsPage } from "@/page/app/goals";
 import { InsightsPage } from "@/page/app/insights";
 import ExchangeRatePage from "@/page/app/exchange-rate/ExchangeRatePage";
-import { DocumentationPage } from "@/page/docs/DocumentationPage";
+
+// Docs Layout & Finance Pages
+import { DocsLayout } from "@/page/docs/layout/DocsLayout";
+import { IntroductionPage } from "@/page/docs/finance/IntroductionPage";
+import { GettingStartedPage } from "@/page/docs/finance/GettingStartedPage";
+import { FeaturesPage } from "@/page/docs/finance/FeaturesPage";
+import { ExchangeRatePage as DocsExchangeRatePage } from "@/page/docs/finance/ExchangeRatePage";
+import { AIIntegrationPage } from "@/page/docs/finance/AIIntegrationPage";
+import { APIPage } from "@/page/docs/finance/APIPage";
+import { PricingPage } from "@/page/docs/finance/PricingPage";
+import { FAQPage } from "@/page/docs/finance/FAQPage";
 
 const router = createBrowserRouter([
   {
@@ -38,7 +53,27 @@ const router = createBrowserRouter([
   // ===== DOCUMENTATION =====
   {
     path: "/docs",
-    element: <DocumentationPage />,
+    element: <DocsLayout />,
+    children: [
+      {
+        index: true,
+        element: <Navigate to="/docs/finance/introduction" replace />,
+      },
+      {
+        path: "finance",
+        children: [
+          { path: "introduction", element: <IntroductionPage /> },
+          { path: "getting-started", element: <GettingStartedPage /> },
+          { path: "features", element: <FeaturesPage /> },
+          { path: "exchange-rate", element: <DocsExchangeRatePage /> },
+          { path: "ai-integration", element: <AIIntegrationPage /> },
+          { path: "api", element: <APIPage /> },
+          { path: "pricing", element: <PricingPage /> },
+          { path: "faq", element: <FAQPage /> },
+        ],
+      },
+      // CRM Module routes will be added here in the future
+    ],
   },
   // ===== ADMIN =====
   {
@@ -80,7 +115,7 @@ const router = createBrowserRouter([
     ],
   },
 
-  // DEFAULT: redirect
+  // DEFAULT: error pages
   {
     path: "/403",
     element: <NoPermissionPage />,
