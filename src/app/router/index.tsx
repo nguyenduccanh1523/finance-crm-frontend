@@ -40,6 +40,9 @@ import { AIIntegrationPage } from "@/page/docs/finance/AIIntegrationPage";
 import { APIPage } from "@/page/docs/finance/APIPage";
 import { PricingPage } from "@/page/docs/finance/PricingPage";
 import { FAQPage } from "@/page/docs/finance/FAQPage";
+import { WorkspaceChooserPage } from "@/page/workspace/WorkspaceChooserPage";
+import { OrganizationLayout } from "@/app/layouts/OrganizationLayout";
+import { OrganizationDashboard } from "@/page/app/organization/OrganizationDashboard";
 
 const router = createBrowserRouter([
   {
@@ -49,6 +52,17 @@ const router = createBrowserRouter([
       { path: "login", element: <LoginPage /> },
       { path: "register", element: <RegisterPage /> },
     ],
+  },
+  // ===== WORKSPACE CHOOSER (for TESTER role) =====
+  {
+    path: "/workspace",
+    element: (
+      <RequireAuth>
+        <RequireRole role="TESTER">
+          <WorkspaceChooserPage />
+        </RequireRole>
+      </RequireAuth>
+    ),
   },
   // ===== DOCUMENTATION =====
   {
@@ -113,6 +127,16 @@ const router = createBrowserRouter([
       { path: "account", element: <AccountPage /> },
       { path: "billing", element: <BillingPage /> },
     ],
+  },
+  // ===== ORGANIZATION (CRM Mode) =====
+  {
+    path: "/app/organization",
+    element: (
+      <RequireAuth>
+        <OrganizationLayout />
+      </RequireAuth>
+    ),
+    children: [{ index: true, element: <OrganizationDashboard /> }],
   },
 
   // DEFAULT: error pages

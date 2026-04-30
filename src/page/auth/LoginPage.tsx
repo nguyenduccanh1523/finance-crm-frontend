@@ -77,6 +77,8 @@ export function LoginPage() {
           user.roles.includes("SUPER_ADMIN")
         ) {
           navigate("/admin");
+        } else if (user.roles.includes("TESTER")) {
+          navigate("/workspace");
         } else {
           navigate("/app");
         }
