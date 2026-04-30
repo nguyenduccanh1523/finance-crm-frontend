@@ -1,10 +1,16 @@
 "use client";
 
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { cn } from "@/lib/utils/utils";
-import { ChevronLeft, ChevronRight, ChevronDown } from "lucide-react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  ChevronDown,
+  ArrowLeftRight,
+} from "lucide-react";
 import type { NavItem } from "@/app/router/nav-config";
+import { Button } from "@/components/ui/button";
 
 interface CustomerSidebarProps {
   navItems: NavItem[];
@@ -20,6 +26,7 @@ export function CustomerSidebar({
   const [collapsed, setCollapsed] = useState(false);
   const [openSubmenu, setOpenSubmenu] = useState<string | null>(null);
   const location = useLocation();
+  const navigate = useNavigate();
   const width = collapsed ? 80 : 270;
 
   useEffect(() => {
@@ -63,7 +70,7 @@ export function CustomerSidebar({
         </button>
       </div>
 
-      <nav className="flex flex-1 flex-col gap-1 text-sm">
+      <nav className="flex flex-1 flex-col gap-1 overflow-y-auto custom-scroll text-sm pr-1">
         {navItems.map((item) => {
           const isSubmenuOpen = openSubmenu === item.label;
           const hasSubmenu = item.submenu && item.submenu.length > 0;
@@ -159,6 +166,29 @@ export function CustomerSidebar({
           );
         })}
       </nav>
+
+      <div className="mt-4 border-t border-gray-200 pt-4 dark:border-gray-800">
+        {collapsed ? (
+          <Button
+            variant="outline"
+            size="icon"
+            className="h-10 w-full rounded-xl border-gray-300 bg-white/70 text-gray-700 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800/80 dark:text-gray-300 dark:hover:bg-gray-800"
+            onClick={() => navigate("/workspace", { replace: true })}
+            title="Switch Workspace"
+          >
+            <ArrowLeftRight className="h-4 w-4" />
+          </Button>
+        ) : (
+          <Button
+            variant="outline"
+            className="w-full justify-start rounded-xl border-gray-300 bg-white/70 text-gray-700 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800/80 dark:text-gray-300 dark:hover:bg-gray-800"
+            onClick={() => navigate("/workspace", { replace: true })}
+          >
+            <ArrowLeftRight className="mr-2 h-4 w-4" />
+            Switch Workspace
+          </Button>
+        )}
+      </div>
     </aside>
   );
 }

@@ -1,7 +1,7 @@
 // src/app/store/authSlice.ts
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 
-export type Role = "ORG_MEMBER" | "ORG_ADMIN" | "SUPER_ADMIN";
+export type Role = "ORG_MEMBER" | "ORG_ADMIN" | "SUPER_ADMIN" | "TESTER";
 
 export interface User {
   id: string;
