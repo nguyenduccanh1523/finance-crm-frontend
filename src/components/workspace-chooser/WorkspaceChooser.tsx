@@ -142,7 +142,7 @@ export function WorkspaceChooser({
                   </h1>
 
                   <p className="max-w-xl text-sm leading-7 text-slate-200 dark:text-slate-200 light:text-slate-600 md:text-base">
-                    Khong can cuon, khong can bam tiep tuc. Bam truc tiep vao
+                    Bam truc tiep vao
                     card hoac nut mui ten de vao dung workspace ban muon dung.
                   </p>
                 </div>
