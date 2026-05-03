@@ -16,7 +16,6 @@ import { UserHomePage } from "@/page/app/user/UserHomePage";
 import { TransactionsPage } from "@/page/app/transactions/TransactionsPage";
 import { AdminAnalyticsPage } from "@/page/admin/AdminAnalyticsPage";
 import { NoPermissionPage } from "@/page/system/NoPermissionPage";
-import { UnauthorizedPage } from "@/page/system/UnauthorizedPage";
 import { NotFoundPage } from "@/page/system/NotFoundPage";
 import { AdminDashboardPage } from "@/page/admin/AdminDashBoardPage";
 import { BillingPage } from "@/page/billing/BillingPage";
@@ -41,8 +40,24 @@ import { APIPage } from "@/page/docs/finance/APIPage";
 import { PricingPage } from "@/page/docs/finance/PricingPage";
 import { FAQPage } from "@/page/docs/finance/FAQPage";
 import { WorkspaceChooserPage } from "@/page/workspace/WorkspaceChooserPage";
+
+
 import { OrganizationLayout } from "@/app/layouts/OrganizationLayout";
 import { OrganizationDashboard } from "@/page/app/organization/OrganizationDashboard";
+import { CalendarPage } from "@/page/app/organization/calendar/CalendarPage";
+import { ClientsPage } from "@/page/app/organization/clients/ClientsPage";
+import { ProjectsPage } from "@/page/app/organization/projects/ProjectsPage";
+import { TasksPage } from "@/page/app/organization/tasks/TasksPage";
+import { AttendancePage } from "@/page/app/organization/attendance/AttendancePage";
+import { TimesheetPage } from "@/page/app/organization/timesheet/TimesheetPage";
+import { LeaveAbsencePage } from "@/page/app/organization/leave/LeaveAbsencePage";
+import { ReportsPage } from "@/page/app/organization/reports/ReportsPage";
+import { OrganizationFinancePage } from "@/page/app/organization/finance/OrganizationFinancePage";
+import { ConfigurationPage } from "@/page/app/organization/configuration/ConfigurationPage";
+import { OrganizationInsightsPage } from "@/page/app/organization/insights/OrganizationInsightsPage";
+import { OrganizationGoalsPage } from "@/page/app/organization/goals/OrganizationGoalsPage";
+import { ChatPage } from "@/page/app/organization/chat/ChatPage";
+
 
 const router = createBrowserRouter([
   {
@@ -136,7 +151,22 @@ const router = createBrowserRouter([
         <OrganizationLayout />
       </RequireAuth>
     ),
-    children: [{ index: true, element: <OrganizationDashboard /> }],
+    children: [
+      { index: true, element: <OrganizationDashboard /> },
+      { path: "calendar", element: <CalendarPage /> },
+      { path: "clients", element: <ClientsPage /> },
+      { path: "projects", element: <ProjectsPage /> },
+      { path: "tasks", element: <TasksPage /> },
+      { path: "attendance", element: <AttendancePage /> },
+      { path: "timesheet", element: <TimesheetPage /> },
+      { path: "leave", element: <LeaveAbsencePage /> },
+      { path: "reports", element: <ReportsPage /> },
+      { path: "finance", element: <OrganizationFinancePage /> },
+      { path: "configuration", element: <ConfigurationPage /> },
+      { path: "insights", element: <OrganizationInsightsPage /> },
+      { path: "goals", element: <OrganizationGoalsPage /> },
+      { path: "chat", element: <ChatPage /> },
+    ],
   },
 
   // DEFAULT: error pages

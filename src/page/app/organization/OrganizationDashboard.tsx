@@ -1,245 +1,249 @@
-import { useOutletContext } from "react-router-dom";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
-  Users,
-  FolderOpen,
-  BarChart3,
-  Zap,
+  Activity,
+  ArrowUpRight,
+  BriefcaseBusiness,
+  CalendarDays,
+  CheckCircle2,
+  Clock3,
   Plus,
-  ArrowRight,
+  Target,
+  UsersRound,
+  WalletCards,
 } from "lucide-react";
 
-interface OrganizationDashboardContextType {
-  selectedOrgId: string;
-}
+const stats = [
+  {
+    label: "Active Clients",
+    value: "128",
+    change: "+12 this month",
+    icon: UsersRound,
+  },
+  {
+    label: "Running Projects",
+    value: "24",
+    change: "8 high priority",
+    icon: BriefcaseBusiness,
+  },
+  {
+    label: "Tasks Done",
+    value: "342",
+    change: "+18 today",
+    icon: CheckCircle2,
+  },
+  {
+    label: "Monthly Revenue",
+    value: "$42.8k",
+    change: "+9.4%",
+    icon: WalletCards,
+  },
+];
+
+const todayTasks = [
+  ["Website redesign", "Design", "Due today", "High"],
+  ["CRM onboarding", "Sales", "Tomorrow", "Medium"],
+  ["Invoice follow-up", "Finance", "Today", "High"],
+  ["Timesheet review", "HR", "Friday", "Low"],
+];
+
+const pipeline = [
+  ["Lead", "42", "32%"],
+  ["Qualified", "26", "48%"],
+  ["Proposal", "14", "64%"],
+  ["Closed", "8", "82%"],
+];
 
 export function OrganizationDashboard() {
-  const { selectedOrgId } =
-    useOutletContext<OrganizationDashboardContextType>();
-
-  const stats = [
-    {
-      icon: Users,
-      label: "Thành viên đội",
-      value: "12",
-      change: "+2 tháng này",
-      color: "from-blue-500 to-cyan-500",
-    },
-    {
-      icon: FolderOpen,
-      label: "Dự án đang hoạt động",
-      value: "8",
-      change: "+1 tuần này",
-      color: "from-purple-500 to-pink-500",
-    },
-    {
-      icon: BarChart3,
-      label: "Hiệu suất",
-      value: "94%",
-      change: "Xuất sắc",
-      color: "from-emerald-500 to-teal-500",
-    },
-    {
-      icon: Zap,
-      label: "Công việc hoàn thành",
-      value: "156",
-      change: "+24 tuần này",
-      color: "from-orange-500 to-red-500",
-    },
-  ];
-
-  const recentActivities = [
-    {
-      type: "user_joined",
-      user: "John Doe",
-      action: "đã tham gia đội",
-      time: "2 giờ trước",
-    },
-    {
-      type: "project_created",
-      user: "Jane Smith",
-      action: "tạo dự án Q4 Planning",
-      time: "4 giờ trước",
-    },
-    {
-      type: "task_completed",
-      user: "Mike Johnson",
-      action: "hoàn thành tác vụ API Integration",
-      time: "1 ngày trước",
-    },
-    {
-      type: "member_invited",
-      user: "Sarah Wilson",
-      action: "mời 3 thành viên mới",
-      time: "2 ngày trước",
-    },
-  ];
-
   return (
-    <div className="flex-1 overflow-y-auto bg-white dark:bg-slate-900 light:bg-white p-6 md:p-8 transition-colors duration-300">
-      {/* Welcome Section */}
-      <div className="mb-8">
-        <h2 className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white light:text-slate-900 mb-2">
-          Dashboard tổ chức
-        </h2>
-        <p className="text-slate-600 dark:text-slate-400 light:text-slate-600">
-          Chào mừng trở lại! Đây là những gì đang xảy ra với tổ chức của bạn.
-        </p>
+    <div className="space-y-4 p-4 md:p-5">
+      <div className="flex flex-col justify-between gap-3 lg:flex-row lg:items-center">
+        <div>
+          <h2 className="text-xl font-semibold tracking-tight text-slate-950 dark:text-white">
+            CRM Dashboard
+          </h2>
+          <p className="text-sm text-slate-500">
+            Tổng quan khách hàng, dự án, công việc và doanh thu trong workspace.
+          </p>
+        </div>
+
+        <div className="flex flex-wrap gap-2">
+          <Button variant="outline" size="sm" className="h-9 rounded-xl">
+            <CalendarDays className="mr-2 h-4 w-4" />
+            Today
+          </Button>
+          <Button size="sm" className="h-9 rounded-xl">
+            <Plus className="mr-2 h-4 w-4" />
+            New Client
+          </Button>
+        </div>
       </div>
 
-      {/* Stats Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
-        {stats.map((stat) => {
-          const Icon = stat.icon;
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        {stats.map((item) => {
+          const Icon = item.icon;
+
           return (
             <Card
-              key={stat.label}
-              className="p-5 md:p-6 bg-white dark:bg-slate-800 light:bg-white border-slate-200 dark:border-slate-700 light:border-slate-200 hover:shadow-lg transition-shadow cursor-pointer"
+              key={item.label}
+              className="rounded-2xl border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900"
             >
-              <div className="flex items-start justify-between mb-3">
-                <div
-                  className={`w-12 h-12 rounded-lg bg-gradient-to-br ${stat.color} flex items-center justify-center`}
-                >
-                  <Icon className="w-6 h-6 text-white" />
+              <div className="flex items-start justify-between">
+                <div>
+                  <p className="text-xs font-medium text-slate-500">
+                    {item.label}
+                  </p>
+                  <p className="mt-2 text-2xl font-semibold tracking-tight">
+                    {item.value}
+                  </p>
+                  <p className="mt-1 text-xs text-emerald-600">
+                    {item.change}
+                  </p>
+                </div>
+
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800">
+                  <Icon className="h-5 w-5" />
                 </div>
               </div>
-              <p className="text-xs md:text-sm text-slate-600 dark:text-slate-400 light:text-slate-600 mb-2">
-                {stat.label}
-              </p>
-              <div className="flex items-baseline gap-2">
-                <p className="text-2xl md:text-3xl font-bold text-slate-900 dark:text-white light:text-slate-900">
-                  {stat.value}
-                </p>
-              </div>
-              <p className="text-xs text-slate-500 dark:text-slate-400 light:text-slate-500 mt-2">
-                {stat.change}
-              </p>
             </Card>
           );
         })}
       </div>
 
-      {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
-        {/* Recent Activity */}
-        <Card className="lg:col-span-2 p-6 bg-white dark:bg-slate-800 light:bg-white border-slate-200 dark:border-slate-700 light:border-slate-200">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg md:text-xl font-semibold text-slate-900 dark:text-white light:text-slate-900">
-              Hoạt động gần đây
-            </h3>
-            <Button
-              variant="outline"
-              size="sm"
-              className="border-slate-300 dark:border-slate-600 light:border-slate-300 text-slate-700 dark:text-slate-300 light:text-slate-700"
-            >
-              Xem tất cả
+      <div className="grid gap-4 xl:grid-cols-[minmax(0,1fr)_360px]">
+        <Card className="rounded-2xl border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <div className="mb-4 flex items-center justify-between">
+            <div>
+              <h3 className="text-sm font-semibold">Today Workload</h3>
+              <p className="text-xs text-slate-500">
+                Các task quan trọng cần xử lý trong ngày.
+              </p>
+            </div>
+
+            <Button variant="ghost" size="sm" className="h-8 rounded-xl">
+              View all
+              <ArrowUpRight className="ml-2 h-4 w-4" />
             </Button>
           </div>
 
-          <div className="space-y-3">
-            {recentActivities.map((activity, idx) => (
-              <div
-                key={idx}
-                className="flex items-center gap-3 p-3 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-700 light:hover:bg-slate-50 transition-colors"
-              >
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-purple-500 flex items-center justify-center text-white text-sm font-semibold flex-shrink-0">
-                  {activity.user.charAt(0)}
+          <div className="overflow-hidden rounded-xl border border-slate-200 dark:border-slate-800">
+            <table className="w-full text-left text-sm">
+              <thead className="bg-slate-50 text-xs text-slate-500 dark:bg-slate-950">
+                <tr>
+                  <th className="px-3 py-2 font-medium">Task</th>
+                  <th className="px-3 py-2 font-medium">Module</th>
+                  <th className="px-3 py-2 font-medium">Due</th>
+                  <th className="px-3 py-2 font-medium">Priority</th>
+                </tr>
+              </thead>
+              <tbody>
+                {todayTasks.map((row) => (
+                  <tr
+                    key={row[0]}
+                    className="border-t border-slate-200 dark:border-slate-800"
+                  >
+                    {row.map((cell, index) => (
+                      <td key={index} className="px-3 py-2 text-sm">
+                        {index === 3 ? (
+                          <span className="rounded-full bg-slate-100 px-2 py-1 text-xs font-medium dark:bg-slate-800">
+                            {cell}
+                          </span>
+                        ) : (
+                          cell
+                        )}
+                      </td>
+                    ))}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </Card>
+
+        <div className="space-y-4">
+          <Card className="rounded-2xl border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div className="mb-4 flex items-center gap-2">
+              <Activity className="h-4 w-4" />
+              <h3 className="text-sm font-semibold">Sales Pipeline</h3>
+            </div>
+
+            <div className="space-y-3">
+              {pipeline.map((item) => (
+                <div key={item[0]}>
+                  <div className="mb-1 flex justify-between text-xs">
+                    <span className="font-medium">{item[0]}</span>
+                    <span className="text-slate-500">{item[1]} deals</span>
+                  </div>
+                  <div className="h-2 rounded-full bg-slate-100 dark:bg-slate-800">
+                    <div
+                      className="h-2 rounded-full bg-slate-900 dark:bg-white"
+                      style={{ width: item[2] }}
+                    />
+                  </div>
                 </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-slate-900 dark:text-white light:text-slate-900">
-                    <span className="font-semibold">{activity.user}</span>{" "}
-                    <span className="text-slate-600 dark:text-slate-400 light:text-slate-600">
-                      {activity.action}
-                    </span>
-                  </p>
-                  <p className="text-xs text-slate-500 dark:text-slate-400 light:text-slate-500">
-                    {activity.time}
-                  </p>
-                </div>
+              ))}
+            </div>
+          </Card>
+
+          <Card className="rounded-2xl border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div className="mb-3 flex items-center gap-2">
+              <Target className="h-4 w-4" />
+              <h3 className="text-sm font-semibold">Quick Focus</h3>
+            </div>
+
+            <div className="space-y-2 text-sm">
+              <div className="flex items-center justify-between rounded-xl bg-slate-50 p-3 dark:bg-slate-950">
+                <span>Follow-up clients</span>
+                <span className="text-xs text-slate-500">14</span>
               </div>
-            ))}
-          </div>
-        </Card>
-
-        {/* Quick Actions */}
-        <Card className="p-6 bg-white dark:bg-slate-800 light:bg-white border-slate-200 dark:border-slate-700 light:border-slate-200">
-          <h3 className="text-lg md:text-xl font-semibold mb-4 text-slate-900 dark:text-white light:text-slate-900">
-            Hành động nhanh
-          </h3>
-
-          <div className="space-y-2">
-            <Button
-              className="w-full justify-start rounded-lg border-slate-300 dark:border-slate-600 light:border-slate-300"
-              variant="outline"
-            >
-              <Plus className="w-4 h-4 mr-2" />
-              Dự án mới
-            </Button>
-
-            <Button
-              className="w-full justify-start rounded-lg border-slate-300 dark:border-slate-600 light:border-slate-300 text-slate-700 dark:text-slate-300 light:text-slate-700"
-              variant="outline"
-            >
-              <Users className="w-4 h-4 mr-2" />
-              Mời thành viên
-            </Button>
-
-            <Button
-              className="w-full justify-start rounded-lg border-slate-300 dark:border-slate-600 light:border-slate-300 text-slate-700 dark:text-slate-300 light:text-slate-700"
-              variant="outline"
-            >
-              <BarChart3 className="w-4 h-4 mr-2" />
-              Xem báo cáo
-            </Button>
-
-            <Button
-              className="w-full justify-start rounded-lg border-slate-300 dark:border-slate-600 light:border-slate-300 text-slate-700 dark:text-slate-300 light:text-slate-700"
-              variant="outline"
-            >
-              <FolderOpen className="w-4 h-4 mr-2" />
-              Duyệt dự án
-            </Button>
-          </div>
-        </Card>
+              <div className="flex items-center justify-between rounded-xl bg-slate-50 p-3 dark:bg-slate-950">
+                <span>Pending invoices</span>
+                <span className="text-xs text-slate-500">6</span>
+              </div>
+              <div className="flex items-center justify-between rounded-xl bg-slate-50 p-3 dark:bg-slate-950">
+                <span>Timesheet waiting</span>
+                <span className="text-xs text-slate-500">9</span>
+              </div>
+            </div>
+          </Card>
+        </div>
       </div>
 
-      {/* Teams Section */}
-      <div className="mt-8">
-        <Card className="p-6 bg-white dark:bg-slate-800 light:bg-white border-slate-200 dark:border-slate-700 light:border-slate-200">
-          <div className="flex items-center justify-between mb-6">
-            <h3 className="text-lg md:text-xl font-semibold text-slate-900 dark:text-white light:text-slate-900">
-              Các đội
-            </h3>
-            <Button size="sm" className="rounded-lg">
-              <Plus className="w-4 h-4 mr-2" />
-              Đội mới
-            </Button>
-          </div>
+      <div className="grid gap-4 lg:grid-cols-3">
+        {[
+          {
+            title: "Upcoming meetings",
+            value: "7",
+            icon: CalendarDays,
+          },
+          {
+            title: "Late timesheets",
+            value: "5",
+            icon: Clock3,
+          },
+          {
+            title: "Monthly goals",
+            value: "76%",
+            icon: Target,
+          },
+        ].map((item) => {
+          const Icon = item.icon;
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {[
-              { name: "Đội Frontend", members: 5, projects: 3 },
-              { name: "Đội Backend", members: 4, projects: 2 },
-              { name: "Đội Design", members: 3, projects: 4 },
-            ].map((team, idx) => (
-              <div
-                key={idx}
-                className="p-4 border border-slate-200 dark:border-slate-700 light:border-slate-200 bg-white dark:bg-slate-700/50 light:bg-slate-50 rounded-lg hover:border-slate-300 dark:hover:border-slate-600 light:hover:border-slate-300 transition-colors cursor-pointer group"
-              >
-                <div className="flex items-start justify-between mb-2">
-                  <h4 className="font-semibold text-slate-900 dark:text-white light:text-slate-900">
-                    {team.name}
-                  </h4>
-                  <ArrowRight className="w-4 h-4 text-slate-400 group-hover:text-slate-600 dark:group-hover:text-slate-300 light:group-hover:text-slate-600 transition-colors" />
-                </div>
-                <p className="text-sm text-slate-600 dark:text-slate-400 light:text-slate-600">
-                  {team.members} thành viên • {team.projects} dự án
-                </p>
+          return (
+            <Card
+              key={item.title}
+              className="flex items-center justify-between rounded-2xl border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900"
+            >
+              <div>
+                <p className="text-sm font-medium">{item.title}</p>
+                <p className="mt-1 text-2xl font-semibold">{item.value}</p>
               </div>
-            ))}
-          </div>
-        </Card>
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-slate-100 dark:bg-slate-800">
+                <Icon className="h-5 w-5" />
+              </div>
+            </Card>
+          );
+        })}
       </div>
     </div>
   );
