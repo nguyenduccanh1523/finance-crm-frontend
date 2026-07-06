@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -376,7 +376,7 @@ export function TransactionsPage() {
                             {formatCurrency(
                               transaction.amountCents,
                               transaction.account?.currency ||
-                                transaction.currency,
+                              transaction.currency,
                             )}
                           </span>
                         )}
@@ -386,7 +386,7 @@ export function TransactionsPage() {
                             {formatCurrency(
                               transaction.amountCents,
                               transaction.account?.currency ||
-                                transaction.currency,
+                              transaction.currency,
                             )}
                           </span>
                         )}
@@ -395,7 +395,7 @@ export function TransactionsPage() {
                             {formatCurrency(
                               transaction.amountCents,
                               transaction.account?.currency ||
-                                transaction.currency,
+                              transaction.currency,
                             )}
                           </span>
                         )}
@@ -405,7 +405,7 @@ export function TransactionsPage() {
                             {formatCurrency(
                               transaction.amountCents,
                               transaction.account?.currency ||
-                                transaction.currency,
+                              transaction.currency,
                             )}
                           </span>
                         )}
