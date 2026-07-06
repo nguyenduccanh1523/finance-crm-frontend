@@ -9,7 +9,7 @@ export interface Transaction {
   workspaceId: string;
   accountId: string;
   transactionTags: any[];
-  type: "EXPENSE" | "INCOME" | "TRANSFER";
+  type: "EXPENSE" | "INCOME" | "TRANSFER" | "GOAL_ALLOCATION";
   amountCents: string;
   currency: string;
   occurredAt: string;

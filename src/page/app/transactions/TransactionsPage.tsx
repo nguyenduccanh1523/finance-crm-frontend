@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
@@ -92,36 +92,40 @@ export function TransactionsPage() {
     useState<Transaction | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const loadTransactions = async (pageNum = 1) => {
-    try {
-      const params: any = {
-        from: `${fromDate}T00:00:00Z`,
-        to: `${toDate}T23:59:59Z`,
-        page: pageNum,
-        limit: 20,
-        sortBy: "occurredAt",
-        order: "DESC",
-      };
+  const loadTransactions = useCallback(
+    async (pageNum = 1) => {
+      try {
+        const params: any = {
+          from: `${fromDate}T00:00:00Z`,
+          to: `${toDate}T23:59:59Z`,
+          page: pageNum,
+          limit: 20,
+          sortBy: "occurredAt",
+          order: "DESC",
+        };
 
-      if (selectedAccount !== "all") {
-        params.accountId = selectedAccount;
+        if (selectedAccount !== "all") {
+          params.accountId = selectedAccount;
+        }
+
+        if (selectedType !== "all") {
+          params.type = selectedType;
+        }
+
+        await fetchTransactions(params);
+        setCurrentPage(pageNum);
+      } catch (err) {
+        console.error(err);
       }
-
-      if (selectedType !== "all") {
-        params.type = selectedType;
-      }
-
-      await fetchTransactions(params);
-      setCurrentPage(pageNum);
-    } catch (err) {
-      console.error(err);
-    }
-  };
+    },
+    [fromDate, toDate, selectedAccount, selectedType, fetchTransactions],
+  );
 
   useEffect(() => {
     loadTransactions();
     fetchAccounts().catch(console.error);
     fetchCategories().catch(console.error);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleFilterChange = () => {
@@ -165,6 +169,8 @@ export function TransactionsPage() {
         return "🟢";
       case "TRANSFER":
         return "🔵";
+      case "GOAL_ALLOCATION":
+        return "🎯";
       default:
         return "⚪";
     }
@@ -393,9 +399,24 @@ export function TransactionsPage() {
                             )}
                           </span>
                         )}
+                        {transaction.type === "GOAL_ALLOCATION" && (
+                          <span className="text-indigo-600 dark:text-indigo-400">
+                            -
+                            {formatCurrency(
+                              transaction.amountCents,
+                              transaction.account?.currency ||
+                                transaction.currency,
+                            )}
+                          </span>
+                        )}
                       </TableCell>
                       <TableCell>
                         <Badge
+                          className={
+                            transaction.type === "GOAL_ALLOCATION"
+                              ? "bg-indigo-100 text-indigo-800 dark:bg-indigo-900/30 dark:text-indigo-400 border border-indigo-200/20"
+                              : ""
+                          }
                           variant={
                             transaction.type === "EXPENSE"
                               ? "destructive"
@@ -404,7 +425,7 @@ export function TransactionsPage() {
                                 : "secondary"
                           }
                         >
-                          {getTypeIcon(transaction.type)} {transaction.type}
+                          {getTypeIcon(transaction.type)} {transaction.type.replace("_", " ")}
                         </Badge>
                       </TableCell>
                       <TableCell>
