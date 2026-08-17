@@ -2,17 +2,40 @@ import { NavLink } from "react-router-dom";
 import { Building2 } from "lucide-react";
 import { organizationNavItems } from "@/page/app/organization/_config/organization-nav.config";
 import { cn } from "@/lib/utils/utils";
+import { useTranslation } from "react-i18next";
 
 interface OrganizationSidebarProps {
   sidebarOpen: boolean;
+  onClose: () => void;
 }
 
-export function OrganizationSidebar({ sidebarOpen }: OrganizationSidebarProps) {
+const navLabelKeys: Record<string, string> = {
+  Dashboard: "organization.nav.dashboard",
+  Calendar: "organization.nav.calendar",
+  Clients: "organization.nav.clients",
+  Projects: "organization.nav.projects",
+  Tasks: "organization.nav.tasks",
+  Attendance: "organization.nav.attendance",
+  Timesheet: "organization.nav.timesheet",
+  "Leave / Absence": "organization.nav.leave",
+  Reports: "organization.nav.reports",
+  Finance: "organization.nav.finance",
+  Configuration: "organization.nav.configuration",
+  Insights: "organization.nav.insights",
+  Goals: "organization.nav.goals",
+  Chat: "organization.nav.chat",
+};
+
+export function OrganizationSidebar({ sidebarOpen, onClose }: OrganizationSidebarProps) {
+  const { t } = useTranslation("common");
+
   return (
     <aside
       className={cn(
-        "h-full shrink-0 border-r border-slate-200 bg-white transition-all duration-300 dark:border-slate-800 dark:bg-slate-950",
-        sidebarOpen ? "w-[175px]" : "w-[56px]"
+        "fixed inset-y-0 left-0 z-50 w-[min(280px,calc(100vw-40px))] border-r border-slate-200 bg-white shadow-2xl transition-all duration-300 dark:border-slate-800 dark:bg-slate-950 lg:static lg:z-auto lg:h-full lg:shrink-0 lg:shadow-none",
+        sidebarOpen
+          ? "translate-x-0 lg:w-[175px]"
+          : "-translate-x-full lg:w-[56px] lg:translate-x-0"
       )}
     >
       <div className="flex h-full flex-col overflow-hidden">
@@ -34,7 +57,7 @@ export function OrganizationSidebar({ sidebarOpen }: OrganizationSidebarProps) {
                   CRM Suite
                 </p>
                 <p className="truncate text-[11px] text-slate-500">
-                  Workspace
+                  {t("organization.workspace")}
                 </p>
               </div>
             )}
@@ -51,7 +74,8 @@ export function OrganizationSidebar({ sidebarOpen }: OrganizationSidebarProps) {
                 key={item.path}
                 to={item.path}
                 end={item.path === "/app/organization"}
-                title={!sidebarOpen ? item.label : undefined}
+                title={!sidebarOpen ? t(navLabelKeys[item.label]) : undefined}
+                onClick={onClose}
                 className={({ isActive }) =>
                   cn(
                     "group relative flex h-9 items-center rounded-xl text-sm font-medium transition-all duration-200",
@@ -78,7 +102,7 @@ export function OrganizationSidebar({ sidebarOpen }: OrganizationSidebarProps) {
                     {sidebarOpen && (
                       <>
                         <span className="min-w-0 flex-1 truncate">
-                          {item.label}
+                          {t(navLabelKeys[item.label])}
                         </span>
 
                         {item.badge === "AI" && (

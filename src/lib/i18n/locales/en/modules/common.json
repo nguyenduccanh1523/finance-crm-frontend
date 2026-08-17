@@ -21,5 +21,18 @@
   "sending": "Sending...",
   "underDevelopment": "This feature is under development",
   "loginSuccess": "Login successful! Redirecting...",
-  "loginFailed": "Login failed"
+  "loginFailed": "Login failed",
+  "organization": {
+    "workspace": "CRM workspace",
+    "searchPlaceholder": "Search clients, projects, tasks...",
+    "new": "New",
+    "switchWorkspace": "Switch workspace",
+    "profileSettings": "Profile settings",
+    "nav": {
+      "dashboard": "Dashboard", "calendar": "Calendar", "clients": "Clients", "projects": "Projects", "tasks": "Tasks", "attendance": "Attendance", "timesheet": "Timesheet", "leave": "Leave / Absence", "reports": "Reports", "finance": "Finance", "configuration": "Configuration", "insights": "Insights", "goals": "Goals", "chat": "Chat"
+    },
+    "clients": {
+      "title": "Clients", "description": "Manage customers, sales opportunities, and owners.", "searchPlaceholder": "Search name, email, phone...", "filter": "Filter", "add": "Add client", "allStages": "All stages", "allTypes": "All types", "allOwners": "All owners", "clearFilters": "Clear filters", "total": "Total clients", "newLeads": "New leads", "followUp": "Follow-up", "won": "Won clients", "list": "Client list", "results": "{{count}} results in the current workspace.", "refresh": "Refresh", "loadErrorTitle": "Unable to load clients", "retry": "Try again", "previous": "Previous", "next": "Next", "page": "Page {{page}} / {{totalPages}}", "client": "Client", "contact": "Contact", "owner": "Owner", "stage": "Stage", "stages": { "LEAD": "Lead", "QUALIFIED": "Qualified", "PROPOSAL": "Proposal", "NEGOTIATION": "Negotiation", "WON": "Won", "LOST": "Lost" }, "actions": "Actions", "noClients": "No clients found", "noClientsDescription": "Try changing the filters or add your first client.", "edit": "Edit {{name}}", "delete": "Delete {{name}}", "deleteConfirm": "Delete client “{{name}}”? The record is soft-deleted and remains recoverable in the database.", "createTitle": "Add client", "editTitle": "Update client", "formDescription": "Save contact details, opportunity stage, and owner.", "name": "Client name", "type": "Client type", "estimatedValue": "Estimated value (VND)", "email": "Email", "phone": "Phone", "industry": "Industry", "website": "Website", "address": "Address", "assignMe": "Assign to me", "cancel": "Cancel", "saveChanges": "Save changes", "create": "Add client", "created": "Client added.", "updated": "Client updated.", "deleted": "{{name}} deleted.", "loadListError": "Unable to load the client list.", "loadMetadataError": "Unable to load filter data.", "saveError": "Unable to save the client.", "deleteError": "Unable to delete the client."
+    }
+  }
 }

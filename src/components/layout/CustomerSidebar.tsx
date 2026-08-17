@@ -15,12 +15,16 @@ import { Button } from "@/components/ui/button";
 interface CustomerSidebarProps {
   navItems: NavItem[];
   title: string;
+  mobileOpen: boolean;
+  onMobileClose: () => void;
   onWidthChange?: (width: number) => void;
 }
 
 export function CustomerSidebar({
   navItems,
   title,
+  mobileOpen,
+  onMobileClose,
   onWidthChange,
 }: CustomerSidebarProps) {
   const [collapsed, setCollapsed] = useState(false);
@@ -32,6 +36,14 @@ export function CustomerSidebar({
   useEffect(() => {
     onWidthChange?.(width);
   }, [collapsed, width, onWidthChange]);
+
+  const handleSidebarToggle = () => {
+    if (window.innerWidth < 1024) {
+      onMobileClose();
+      return;
+    }
+    setCollapsed((current) => !current);
+  };
 
   // Check if any submenu item matches current path
   useEffect(() => {
@@ -50,8 +62,10 @@ export function CustomerSidebar({
   return (
     <aside
       className={cn(
-        "flex h-full flex-col pt-6 pb-4 bg-gray-50 dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 transition-all duration-300",
-        collapsed ? "w-20 px-3" : "w-72 px-6",
+        "fixed inset-y-0 left-0 z-50 flex h-full w-[min(288px,calc(100vw-32px))] flex-col border-r border-gray-200 bg-gray-50 pb-4 pt-6 shadow-2xl transition-all duration-300 dark:border-gray-800 dark:bg-gray-900 lg:static lg:z-auto lg:h-full lg:shadow-none",
+        mobileOpen ? "translate-x-0" : "-translate-x-full lg:translate-x-0",
+        collapsed ? "lg:w-20 lg:px-3" : "lg:w-72 lg:px-6",
+        "px-5",
       )}
     >
       {/* HEADER */}
@@ -63,7 +77,7 @@ export function CustomerSidebar({
         )}
 
         <button
-          onClick={() => setCollapsed(!collapsed)}
+          onClick={handleSidebarToggle}
           className="p-1 rounded-md hover:bg-gray-200 dark:hover:bg-gray-700 transition"
         >
           {collapsed ? <ChevronRight size={18} /> : <ChevronLeft size={18} />}
@@ -106,6 +120,7 @@ export function CustomerSidebar({
                 <NavLink
                   to={item.path}
                   end
+                  onClick={onMobileClose}
                   className={({ isActive }) =>
                     cn(
                       "flex items-center justify-between gap-3 px-3 py-2 rounded-lg font-medium transition-all",
@@ -147,6 +162,7 @@ export function CustomerSidebar({
                       to={subitem.path}
                       key={subitem.path}
                       end
+                      onClick={onMobileClose}
                       className={({ isActive }) =>
                         cn(
                           "flex items-center gap-3 px-3 py-2 rounded-lg font-medium transition-all text-sm",
@@ -173,7 +189,10 @@ export function CustomerSidebar({
             variant="outline"
             size="icon"
             className="h-10 w-full rounded-xl border-gray-300 bg-white/70 text-gray-700 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800/80 dark:text-gray-300 dark:hover:bg-gray-800"
-            onClick={() => navigate("/workspace", { replace: true })}
+            onClick={() => {
+              onMobileClose();
+              navigate("/workspace", { replace: true });
+            }}
             title="Switch Workspace"
           >
             <ArrowLeftRight className="h-4 w-4" />
@@ -182,7 +201,10 @@ export function CustomerSidebar({
           <Button
             variant="outline"
             className="w-full justify-start rounded-xl border-gray-300 bg-white/70 text-gray-700 hover:bg-gray-100 dark:border-gray-700 dark:bg-gray-800/80 dark:text-gray-300 dark:hover:bg-gray-800"
-            onClick={() => navigate("/workspace", { replace: true })}
+            onClick={() => {
+              onMobileClose();
+              navigate("/workspace", { replace: true });
+            }}
           >
             <ArrowLeftRight className="mr-2 h-4 w-4" />
             Switch Workspace

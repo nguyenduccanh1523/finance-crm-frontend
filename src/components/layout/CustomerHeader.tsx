@@ -14,6 +14,7 @@ import {
   Zap,
   Layout,
   HelpCircle,
+  Menu,
 } from "lucide-react";
 import { setTheme } from "@/app/store/uiSlice";
 
@@ -77,7 +78,11 @@ const navSections: NavSection[] = [
   },
 ];
 
-export function CustomerHeader() {
+interface CustomerHeaderProps {
+  onOpenSidebar: () => void;
+}
+
+export function CustomerHeader({ onOpenSidebar }: CustomerHeaderProps) {
   const user = useAppSelector((s) => s.auth.user);
   const theme = useAppSelector((s) => s.ui.theme);
   const dispatch = useAppDispatch();
@@ -95,9 +100,16 @@ export function CustomerHeader() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-gray-200 dark:border-gray-800 bg-white/95 dark:bg-gray-950/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:supports-[backdrop-filter]:bg-gray-950/60 shadow-sm">
-      <div className="flex h-16 items-center justify-between px-8">
+      <div className="flex h-16 items-center justify-between px-4 sm:px-8">
         {/* LEFT — Logo + Page Title */}
-        <div className="flex items-center gap-6">
+        <div className="flex min-w-0 items-center gap-3 sm:gap-6">
+          <button
+            aria-label="Open navigation"
+            className="rounded-lg p-2 hover:bg-gray-100 dark:hover:bg-gray-800 lg:hidden"
+            onClick={onOpenSidebar}
+          >
+            <Menu className="h-5 w-5" />
+          </button>
           <div
             onClick={() => navigate("/app")}
             className="flex items-center gap-2 cursor-pointer hover:opacity-80 transition"
@@ -184,7 +196,7 @@ export function CustomerHeader() {
         </div>
 
         {/* RIGHT — Actions */}
-        <div className="flex items-center gap-3">
+        <div className="flex shrink-0 items-center gap-1 sm:gap-3">
           {/* Page Title Mobile */}
           <div className="sm:hidden">
             <p className="text-xs font-semibold text-gray-700 dark:text-gray-300 truncate max-w-[100px]">
@@ -208,7 +220,7 @@ export function CustomerHeader() {
           </button>
 
           {/* Notification Dropdown */}
-          <NotificationDropdown />
+          <div className="hidden sm:block"><NotificationDropdown /></div>
 
           {/* Language */}
           <LanguageSwitcher />
@@ -216,7 +228,7 @@ export function CustomerHeader() {
           {/* Avatar Dropdown */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="flex items-center gap-2 rounded-lg bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 px-3 py-2 hover:from-blue-100 hover:to-indigo-100 dark:hover:from-blue-900/30 dark:hover:to-indigo-900/30 transition-all border border-blue-200 dark:border-blue-800/50">
+              <button className="flex items-center gap-2 rounded-lg border border-blue-200 bg-gradient-to-br from-blue-50 to-indigo-50 px-2 py-2 transition-all hover:from-blue-100 hover:to-indigo-100 dark:border-blue-800/50 dark:from-blue-900/20 dark:to-indigo-900/20 dark:hover:from-blue-900/30 dark:hover:to-indigo-900/30 sm:px-3">
                 <Avatar className="h-7 w-7">
                   <AvatarFallback className="text-xs font-bold bg-gradient-to-br from-blue-600 to-indigo-600 text-white">
                     {initials}

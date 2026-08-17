@@ -21,5 +21,18 @@
   "sending": "Đang gửi...",
   "underDevelopment": "Tính năng này đang được phát triển",
   "loginSuccess": "Đăng nhập thành công! Đang chuyển hướng...",
-  "loginFailed": "Đăng nhập thất bại"
+  "loginFailed": "Đăng nhập thất bại",
+  "organization": {
+    "workspace": "Không gian CRM",
+    "searchPlaceholder": "Tìm khách hàng, dự án, công việc...",
+    "new": "Mới",
+    "switchWorkspace": "Chuyển không gian làm việc",
+    "profileSettings": "Cài đặt hồ sơ",
+    "nav": {
+      "dashboard": "Tổng quan", "calendar": "Lịch", "clients": "Khách hàng", "projects": "Dự án", "tasks": "Công việc", "attendance": "Chấm công", "timesheet": "Bảng công", "leave": "Nghỉ phép / Vắng mặt", "reports": "Báo cáo", "finance": "Tài chính", "configuration": "Cấu hình", "insights": "Phân tích", "goals": "Mục tiêu", "chat": "Trò chuyện"
+    },
+    "clients": {
+      "title": "Khách hàng", "description": "Quản lý khách hàng, cơ hội bán hàng và người phụ trách.", "searchPlaceholder": "Tìm tên, email, số điện thoại...", "filter": "Lọc", "add": "Thêm khách hàng", "allStages": "Tất cả giai đoạn", "allTypes": "Tất cả loại", "allOwners": "Tất cả người phụ trách", "clearFilters": "Xoá bộ lọc", "total": "Tổng khách hàng", "newLeads": "Lead mới", "followUp": "Cần follow-up", "won": "Đã chốt", "list": "Danh sách khách hàng", "results": "{{count}} kết quả trong workspace hiện tại.", "refresh": "Làm mới", "loadErrorTitle": "Không thể tải khách hàng", "retry": "Thử lại", "previous": "Trước", "next": "Sau", "page": "Trang {{page}} / {{totalPages}}", "client": "Khách hàng", "contact": "Liên hệ", "owner": "Người phụ trách", "stage": "Giai đoạn", "stages": { "LEAD": "Tiềm năng", "QUALIFIED": "Đã đủ điều kiện", "PROPOSAL": "Đề xuất", "NEGOTIATION": "Đàm phán", "WON": "Thành công", "LOST": "Không thành công" }, "actions": "Thao tác", "noClients": "Chưa tìm thấy khách hàng", "noClientsDescription": "Thử thay đổi bộ lọc hoặc thêm khách hàng đầu tiên.", "edit": "Sửa {{name}}", "delete": "Xoá {{name}}", "deleteConfirm": "Xoá khách hàng “{{name}}”? Dữ liệu được xoá mềm và vẫn có thể khôi phục từ database.", "createTitle": "Thêm khách hàng", "editTitle": "Cập nhật khách hàng", "formDescription": "Lưu thông tin liên hệ, trạng thái cơ hội và người phụ trách.", "name": "Tên khách hàng", "type": "Loại khách hàng", "estimatedValue": "Giá trị dự kiến (VND)", "email": "Email", "phone": "Số điện thoại", "industry": "Lĩnh vực", "website": "Website", "address": "Địa chỉ", "assignMe": "Tự gán cho tôi", "cancel": "Huỷ", "saveChanges": "Lưu thay đổi", "create": "Thêm khách hàng", "created": "Đã thêm khách hàng.", "updated": "Đã cập nhật khách hàng.", "deleted": "Đã xoá {{name}}.", "loadListError": "Không thể tải danh sách khách hàng.", "loadMetadataError": "Không thể tải dữ liệu bộ lọc.", "saveError": "Không thể lưu khách hàng.", "deleteError": "Không thể xoá khách hàng."
+    }
+  }
 }

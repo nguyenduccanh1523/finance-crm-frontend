@@ -11,7 +11,10 @@ const resources = {
 
 i18n.use(initReactI18next).init({
   resources,
-  lng: "en",
+  lng:
+    typeof window !== "undefined"
+      ? window.localStorage.getItem("ui.language") || "vi"
+      : "vi",
   fallbackLng: "en",
   ns: ["common"],
   defaultNS: "common",

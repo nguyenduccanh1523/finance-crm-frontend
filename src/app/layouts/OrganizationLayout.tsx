@@ -12,7 +12,9 @@ export function OrganizationLayout() {
   const user = useAppSelector((state) => state.auth.user);
 
   // Mặc định mở sidebar
-  const [sidebarOpen, setSidebarOpen] = useState(true);
+  const [sidebarOpen, setSidebarOpen] = useState(
+    () => typeof window !== "undefined" && window.innerWidth >= 1024,
+  );
 
   const refreshAuthContext = useCallback(async () => {
     try {
@@ -33,9 +35,29 @@ export function OrganizationLayout() {
     };
   }, [refreshAuthContext]);
 
+  useEffect(() => {
+    const closeSidebarOnMobile = () => {
+      if (window.innerWidth < 1024) setSidebarOpen(false);
+    };
+    window.addEventListener("resize", closeSidebarOnMobile);
+    return () => window.removeEventListener("resize", closeSidebarOnMobile);
+  }, []);
+
   return (
     <div className="flex h-screen overflow-hidden bg-slate-50 text-slate-950 dark:bg-slate-950 dark:text-white">
-      <OrganizationSidebar sidebarOpen={sidebarOpen} />
+      <OrganizationSidebar
+        sidebarOpen={sidebarOpen}
+        onClose={() => {
+          if (window.innerWidth < 1024) setSidebarOpen(false);
+        }}
+      />
+      {sidebarOpen && (
+        <button
+          aria-label="Close navigation"
+          className="fixed inset-0 z-40 bg-slate-950/45 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
 
       <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
         <OrganizationHeader
