@@ -9,6 +9,15 @@ export interface User {
   fullName?: string;
   roles: Role[];
   permissions: string[];
+  activeOrganization?: {
+    organization: {
+      id: string;
+      name: string;
+      currency: string;
+      timezone: string;
+    };
+    accessRole: Role;
+  } | null;
 }
 
 interface AuthState {
