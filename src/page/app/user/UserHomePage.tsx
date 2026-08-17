@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { axiosClient } from "@/lib/api/axiosClient";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton";
 import {
@@ -17,7 +23,7 @@ import {
   AlertCircle,
   ChevronRight,
   Plus,
-  CreditCard
+  CreditCard,
 } from "lucide-react";
 import {
   AreaChart,
@@ -26,7 +32,7 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  ResponsiveContainer
+  ResponsiveContainer,
 } from "recharts";
 
 // Interfaces
@@ -102,8 +108,8 @@ export function UserHomePage() {
       console.error("Error fetching dashboard data:", err);
       setError(
         err?.response?.data?.message ||
-        err?.message ||
-        "Không thể kết nối tới máy chủ. Vui lòng thử lại sau."
+          err?.message ||
+          "Không thể kết nối tới máy chủ. Vui lòng thử lại sau.",
       );
     } finally {
       setLoading(false);
@@ -131,7 +137,10 @@ export function UserHomePage() {
   const formatChartDate = (dateStr: string) => {
     try {
       const date = new Date(dateStr);
-      return date.toLocaleDateString("vi-VN", { day: "2-digit", month: "2-digit" });
+      return date.toLocaleDateString("vi-VN", {
+        day: "2-digit",
+        month: "2-digit",
+      });
     } catch (e) {
       return dateStr;
     }
@@ -144,7 +153,7 @@ export function UserHomePage() {
         day: "2-digit",
         month: "2-digit",
         hour: "2-digit",
-        minute: "2-digit"
+        minute: "2-digit",
       });
     } catch (e) {
       return dateStr;
@@ -188,23 +197,30 @@ export function UserHomePage() {
       case "POSITIVE":
         return {
           bg: "from-emerald-500/10 to-teal-500/10 border-emerald-500/20 text-emerald-700 dark:text-emerald-300",
-          icon: <TrendingUp className="h-6 w-6 text-emerald-500 animate-bounce" />,
-          badge: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20",
-          text: "Tích cực"
+          icon: (
+            <TrendingUp className="h-6 w-6 text-emerald-500 animate-bounce" />
+          ),
+          badge:
+            "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20",
+          text: "Tích cực",
         };
       case "NEGATIVE":
         return {
           bg: "from-rose-500/10 to-orange-500/10 border-rose-500/20 text-rose-700 dark:text-rose-300",
-          icon: <TrendingDown className="h-6 w-6 text-rose-500 animate-bounce" />,
-          badge: "bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/20",
-          text: "Cần chú ý"
+          icon: (
+            <TrendingDown className="h-6 w-6 text-rose-500 animate-bounce" />
+          ),
+          badge:
+            "bg-rose-500/15 text-rose-600 dark:text-rose-400 border border-rose-500/20",
+          text: "Cần chú ý",
         };
       default:
         return {
           bg: "from-blue-500/10 to-indigo-500/10 border-blue-500/20 text-blue-700 dark:text-blue-300",
           icon: <AlertCircle className="h-6 w-6 text-blue-500" />,
-          badge: "bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-500/20",
-          text: "Ổn định"
+          badge:
+            "bg-blue-500/15 text-blue-600 dark:text-blue-400 border border-blue-500/20",
+          text: "Ổn định",
         };
     }
   };
@@ -220,7 +236,9 @@ export function UserHomePage() {
           <AlertCircle className="h-10 w-10 text-rose-500" />
         </div>
         <h2 className="text-xl font-bold">Không thể tải dữ liệu tổng quan</h2>
-        <p className="text-muted-foreground max-w-md text-sm">{error || "Lỗi không xác định."}</p>
+        <p className="text-muted-foreground max-w-md text-sm">
+          {error || "Lỗi không xác định."}
+        </p>
         <button
           onClick={fetchDashboardData}
           className="mt-2 px-5 py-2.5 bg-primary text-primary-foreground hover:bg-primary/95 rounded-xl font-medium transition shadow-md active:scale-95"
@@ -234,7 +252,8 @@ export function UserHomePage() {
   // Calculate totals by currency
   const balanceByCurrency: Record<string, number> = {};
   data.balance.accounts.forEach((acc) => {
-    balanceByCurrency[acc.currency] = (balanceByCurrency[acc.currency] || 0) + acc.currentBalanceCents;
+    balanceByCurrency[acc.currency] =
+      (balanceByCurrency[acc.currency] || 0) + acc.currentBalanceCents;
   });
 
   const formattedTotals = Object.entries(balanceByCurrency)
@@ -260,7 +279,10 @@ export function UserHomePage() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-extrabold tracking-tight">
-            Chào buổi sáng, <span className="bg-gradient-to-r from-blue-600 to-indigo-500 bg-clip-text text-transparent">chào mừng trở lại!</span>
+            Chào buổi sáng,{" "}
+            <span className="bg-gradient-to-r from-blue-600 to-indigo-500 bg-clip-text text-transparent">
+              chào mừng trở lại!
+            </span>
           </h1>
           <p className="text-muted-foreground mt-1">
             Dưới đây là tổng quan tài chính cá nhân của bạn ngày hôm nay.
@@ -283,18 +305,26 @@ export function UserHomePage() {
       </div>
 
       {/* XU HƯỚNG TỔNG QUAN */}
-      <div className={`flex flex-col sm:flex-row items-start sm:items-center gap-4 p-5 rounded-2xl border bg-gradient-to-r ${trendStyle.bg} transition-all duration-300 hover:shadow-sm`}>
+      <div
+        className={`flex flex-col sm:flex-row items-start sm:items-center gap-4 p-5 rounded-2xl border bg-gradient-to-r ${trendStyle.bg} transition-all duration-300 hover:shadow-sm`}
+      >
         <div className="p-3 rounded-xl bg-background/80 shadow-sm border border-black/5 dark:border-white/5">
           {trendStyle.icon}
         </div>
         <div className="flex-1 space-y-1">
           <div className="flex items-center gap-2">
-            <span className="font-bold text-base">{data.balance.trend.summary}</span>
-            <Badge className={`${trendStyle.badge} uppercase font-extrabold hover:bg-transparent`}>
+            <span className="font-bold text-base">
+              {data.balance.trend.summary}
+            </span>
+            <Badge
+              className={`${trendStyle.badge} uppercase font-extrabold hover:bg-transparent`}
+            >
               {trendStyle.text}
             </Badge>
           </div>
-          <p className="text-sm opacity-90 leading-relaxed">{data.balance.trend.detail}</p>
+          <p className="text-sm opacity-90 leading-relaxed">
+            {data.balance.trend.detail}
+          </p>
         </div>
       </div>
 
@@ -304,7 +334,9 @@ export function UserHomePage() {
         <Card className="shadow-sm hover:shadow-md transition duration-300 border-l-4 border-l-blue-500 bg-card/60 backdrop-blur-sm relative overflow-hidden">
           <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/5 rounded-full -mr-8 -mt-8 pointer-events-none" />
           <CardHeader className="pb-2">
-            <CardDescription className="text-sm font-medium">Tổng Số Dư Khả Dụng</CardDescription>
+            <CardDescription className="text-sm font-medium">
+              Tổng Số Dư Khả Dụng
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-black tracking-tight mt-1 text-blue-600 dark:text-blue-400 break-words">
@@ -312,9 +344,16 @@ export function UserHomePage() {
             </div>
             <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground border-t pt-3 border-border/50">
               <span className="flex items-center gap-1 font-semibold">
-                <Wallet className="h-3.5 w-3.5" /> {data.balance.accountCount} tài khoản
+                <Wallet className="h-3.5 w-3.5" /> {data.balance.accountCount}{" "}
+                tài khoản
               </span>
-              <span>Dòng tiền: {formatCurrency(data.balance.netFlowCents, data.balance.currency)}</span>
+              <span>
+                Dòng tiền:{" "}
+                {formatCurrency(
+                  data.balance.netFlowCents,
+                  data.balance.currency,
+                )}
+              </span>
             </div>
           </CardContent>
         </Card>
@@ -323,17 +362,27 @@ export function UserHomePage() {
         <Card className="shadow-sm hover:shadow-md transition duration-300 border-l-4 border-l-emerald-500 bg-card/60 backdrop-blur-sm relative overflow-hidden">
           <div className="absolute top-0 right-0 w-24 h-24 bg-emerald-500/5 rounded-full -mr-8 -mt-8 pointer-events-none" />
           <CardHeader className="pb-2">
-            <CardDescription className="text-sm font-medium">Thu Nhập Tháng Này</CardDescription>
+            <CardDescription className="text-sm font-medium">
+              Thu Nhập Tháng Này
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-black tracking-tight mt-1 text-emerald-600 dark:text-emerald-400">
-              {formatCurrency(data.thisMonthIncome.totalCents, data.thisMonthIncome.currency)}
+              {formatCurrency(
+                data.thisMonthIncome.totalCents,
+                data.thisMonthIncome.currency,
+              )}
             </div>
             <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground border-t pt-3 border-border/50">
-              <span className={`flex items-center gap-0.5 font-bold ${data.thisMonthIncome.vsLastMonthPercent >= 0 ? "text-emerald-500" : "text-rose-500"}`}>
-                {data.thisMonthIncome.vsLastMonthPercent >= 0 ? "+" : ""}{data.thisMonthIncome.vsLastMonthPercent}%
+              <span
+                className={`flex items-center gap-0.5 font-bold ${data.thisMonthIncome.vsLastMonthPercent >= 0 ? "text-emerald-500" : "text-rose-500"}`}
+              >
+                {data.thisMonthIncome.vsLastMonthPercent >= 0 ? "+" : ""}
+                {data.thisMonthIncome.vsLastMonthPercent}%
               </span>
-              <span className="truncate max-w-[150px]">{data.thisMonthIncome.changeLabel}</span>
+              <span className="truncate max-w-[150px]">
+                {data.thisMonthIncome.changeLabel}
+              </span>
             </div>
           </CardContent>
         </Card>
@@ -342,23 +391,38 @@ export function UserHomePage() {
         <Card className="shadow-sm hover:shadow-md transition duration-300 border-l-4 border-l-rose-500 bg-card/60 backdrop-blur-sm relative overflow-hidden">
           <div className="absolute top-0 right-0 w-24 h-24 bg-rose-500/5 rounded-full -mr-8 -mt-8 pointer-events-none" />
           <CardHeader className="pb-2">
-            <CardDescription className="text-sm font-medium">Chi Tiêu Tháng Này</CardDescription>
+            <CardDescription className="text-sm font-medium">
+              Chi Tiêu Tháng Này
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-black tracking-tight mt-1 text-rose-600 dark:text-rose-400">
-              {formatCurrency(data.thisMonthExpense.totalCents, data.thisMonthExpense.currency)}
+              {formatCurrency(
+                data.thisMonthExpense.totalCents,
+                data.thisMonthExpense.currency,
+              )}
             </div>
             <div className="mt-3 flex items-center justify-between text-xs text-muted-foreground border-t pt-3 border-border/50">
-              {data.thisMonthExpense.remainingCents !== undefined && data.thisMonthExpense.remainingCents > 0 ? (
+              {data.thisMonthExpense.remainingCents !== undefined &&
+              data.thisMonthExpense.remainingCents > 0 ? (
                 <span className="text-amber-500 font-semibold">
-                  Còn lại: {formatCurrency(data.thisMonthExpense.remainingCents, data.thisMonthExpense.currency)}
+                  Còn lại:{" "}
+                  {formatCurrency(
+                    data.thisMonthExpense.remainingCents,
+                    data.thisMonthExpense.currency,
+                  )}
                 </span>
               ) : (
-                <span className={`flex items-center gap-0.5 font-bold ${data.thisMonthExpense.vsLastMonthPercent <= 0 ? "text-emerald-500" : "text-rose-500"}`}>
-                  {data.thisMonthExpense.vsLastMonthPercent >= 0 ? "+" : ""}{data.thisMonthExpense.vsLastMonthPercent}%
+                <span
+                  className={`flex items-center gap-0.5 font-bold ${data.thisMonthExpense.vsLastMonthPercent <= 0 ? "text-emerald-500" : "text-rose-500"}`}
+                >
+                  {data.thisMonthExpense.vsLastMonthPercent >= 0 ? "+" : ""}
+                  {data.thisMonthExpense.vsLastMonthPercent}%
                 </span>
               )}
-              <span className="truncate max-w-[150px]">{data.thisMonthExpense.changeLabel}</span>
+              <span className="truncate max-w-[150px]">
+                {data.thisMonthExpense.changeLabel}
+              </span>
             </div>
           </CardContent>
         </Card>
@@ -372,18 +436,34 @@ export function UserHomePage() {
           <Card className="shadow-sm bg-card/60 backdrop-blur-sm border">
             <CardHeader className="flex flex-row items-center justify-between">
               <div>
-                <CardTitle className="text-lg font-bold">Chi Tiêu Hàng Tuần</CardTitle>
-                <CardDescription>Chi tiêu 7 ngày gần nhất của bạn</CardDescription>
+                <CardTitle className="text-lg font-bold">
+                  Chi Tiêu Hàng Tuần
+                </CardTitle>
+                <CardDescription>
+                  Chi tiêu 7 ngày gần nhất của bạn
+                </CardDescription>
               </div>
-              <Badge variant="outline" className="border-indigo-500/20 bg-indigo-500/5 text-indigo-600 dark:text-indigo-400">
+              <Badge
+                variant="outline"
+                className="border-indigo-500/20 bg-indigo-500/5 text-indigo-600 dark:text-indigo-400"
+              >
                 Tuần này
               </Badge>
             </CardHeader>
             <CardContent className="h-72">
               <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={chartData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+                <AreaChart
+                  data={chartData}
+                  margin={{ top: 10, right: 10, left: -20, bottom: 0 }}
+                >
                   <defs>
-                    <linearGradient id="spending-gradient" x1="0" y1="0" x2="0" y2="1">
+                    <linearGradient
+                      id="spending-gradient"
+                      x1="0"
+                      y1="0"
+                      x2="0"
+                      y2="1"
+                    >
                       <stop offset="5%" stopColor="#4f46e5" stopOpacity={0.3} />
                       <stop offset="95%" stopColor="#4f46e5" stopOpacity={0} />
                     </linearGradient>
@@ -400,15 +480,16 @@ export function UserHomePage() {
                     axisLine={false}
                     className="text-xs text-muted-foreground font-medium"
                     tickFormatter={(val) => {
-                      if (val >= 1000000) return `${(val / 1000000).toFixed(1)}M`;
+                      if (val >= 1000000)
+                        return `${(val / 1000000).toFixed(1)}M`;
                       if (val >= 1000) return `${(val / 1000).toFixed(0)}k`;
                       return val;
                     }}
                   />
                   <Tooltip
-                    formatter={(value: any, name: any, props: any) => [
+                    formatter={(_value: any, _name: any, props: any) => [
                       props.payload.formattedAmount,
-                      "Chi tiêu"
+                      "Chi tiêu",
                     ]}
                     contentStyle={{
                       backgroundColor: "hsl(var(--card))",
@@ -416,7 +497,7 @@ export function UserHomePage() {
                       borderRadius: "12px",
                       boxShadow: "0 4px 12px rgba(0, 0, 0, 0.05)",
                       fontSize: "12px",
-                      color: "hsl(var(--foreground))"
+                      color: "hsl(var(--foreground))",
                     }}
                     labelStyle={{ fontWeight: "bold", marginBottom: "4px" }}
                   />
@@ -462,7 +543,9 @@ export function UserHomePage() {
 
                     <div className="flex justify-between items-start">
                       <div className="space-y-0.5">
-                        <p className="text-xs font-medium text-white/70 uppercase tracking-widest">{acc.type}</p>
+                        <p className="text-xs font-medium text-white/70 uppercase tracking-widest">
+                          {acc.type}
+                        </p>
                         <h3 className="font-extrabold text-lg text-white truncate max-w-[200px]">
                           {acc.name}
                         </h3>
@@ -473,7 +556,9 @@ export function UserHomePage() {
                     </div>
 
                     <div>
-                      <p className="text-xs font-medium text-white/70">Số dư hiện tại</p>
+                      <p className="text-xs font-medium text-white/70">
+                        Số dư hiện tại
+                      </p>
                       <p className="text-2xl font-black tracking-tight mt-1">
                         {formatCurrency(acc.currentBalanceCents, acc.currency)}
                       </p>
@@ -489,8 +574,12 @@ export function UserHomePage() {
         <Card className="shadow-sm bg-card/60 backdrop-blur-sm border flex flex-col h-[560px]">
           <CardHeader className="flex flex-row items-center justify-between border-b pb-4">
             <div>
-              <CardTitle className="text-lg font-bold">Giao Dịch Gần Đây</CardTitle>
-              <CardDescription>Các hoạt động tài chính mới nhất</CardDescription>
+              <CardTitle className="text-lg font-bold">
+                Giao Dịch Gần Đây
+              </CardTitle>
+              <CardDescription>
+                Các hoạt động tài chính mới nhất
+              </CardDescription>
             </div>
             <Link
               to="/app/transactions"
@@ -505,7 +594,9 @@ export function UserHomePage() {
                 <div className="p-3 bg-muted rounded-full text-muted-foreground">
                   <PiggyBank className="h-6 w-6" />
                 </div>
-                <p className="text-sm font-medium text-muted-foreground">Chưa có giao dịch nào gần đây</p>
+                <p className="text-sm font-medium text-muted-foreground">
+                  Chưa có giao dịch nào gần đây
+                </p>
                 <Link
                   to="/app/transactions"
                   className="text-xs text-primary font-bold hover:underline"
@@ -519,7 +610,7 @@ export function UserHomePage() {
                   const isIncome = tx.type === "INCOME";
                   const isExpense = tx.type === "EXPENSE";
                   const isGoal = tx.type === "GOAL_ALLOCATION";
-                  
+
                   let sign = "";
                   let amountColor = "";
                   if (isIncome) {
@@ -532,7 +623,11 @@ export function UserHomePage() {
                     amountColor = "font-extrabold";
                   }
 
-                  const titleText = tx.note || tx.counterparty || tx.categoryName || "Giao dịch";
+                  const titleText =
+                    tx.note ||
+                    tx.counterparty ||
+                    tx.categoryName ||
+                    "Giao dịch";
 
                   return (
                     <div
@@ -540,7 +635,9 @@ export function UserHomePage() {
                       className="flex items-center justify-between py-3.5 hover:bg-muted/30 px-2 rounded-xl transition-colors duration-200"
                     >
                       <div className="flex items-center gap-3 min-w-0">
-                        <div className={`p-2.5 rounded-xl ${getTransactionColorClass(tx.type)} shadow-sm shrink-0`}>
+                        <div
+                          className={`p-2.5 rounded-xl ${getTransactionColorClass(tx.type)} shadow-sm shrink-0`}
+                        >
                           {getTransactionIcon(tx.type, tx.categoryIcon)}
                         </div>
                         <div className="min-w-0">
@@ -549,9 +646,12 @@ export function UserHomePage() {
                           </h4>
                           <div className="flex items-center gap-1.5 mt-0.5">
                             <span className="text-[10px] text-muted-foreground font-medium flex items-center gap-0.5">
-                              <Calendar className="h-3 w-3 shrink-0" /> {formatDateTime(tx.occurredAt)}
+                              <Calendar className="h-3 w-3 shrink-0" />{" "}
+                              {formatDateTime(tx.occurredAt)}
                             </span>
-                            <span className="text-[10px] text-muted-foreground">•</span>
+                            <span className="text-[10px] text-muted-foreground">
+                              •
+                            </span>
                             <span className="text-[10px] text-muted-foreground truncate font-medium max-w-[80px]">
                               {tx.accountName}
                             </span>
@@ -599,7 +699,10 @@ function DashboardSkeleton() {
       {/* Top Stats Cards Skeleton */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {[1, 2, 3].map((i) => (
-          <div key={i} className="h-32 rounded-2xl border bg-card p-6 flex flex-col justify-between">
+          <div
+            key={i}
+            className="h-32 rounded-2xl border bg-card p-6 flex flex-col justify-between"
+          >
             <div className="space-y-2">
               <Skeleton className="h-4 w-1/3" />
               <Skeleton className="h-8 w-2/3" />

@@ -68,14 +68,14 @@ const router = createBrowserRouter([
       { path: "register", element: <RegisterPage /> },
     ],
   },
-  // ===== WORKSPACE CHOOSER (for TESTER role) =====
+  // ===== WORKSPACE CHOOSER =====
+  // Every authenticated account owns a personal workspace and may also have
+  // organization memberships. It is therefore not a tester-only screen.
   {
     path: "/workspace",
     element: (
       <RequireAuth>
-        <RequireRole role="TESTER">
-          <WorkspaceChooserPage />
-        </RequireRole>
+        <WorkspaceChooserPage />
       </RequireAuth>
     ),
   },
