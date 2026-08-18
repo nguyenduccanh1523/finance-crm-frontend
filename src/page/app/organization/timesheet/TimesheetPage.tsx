@@ -1,5 +1,5 @@
-import { CrmModulePage } from "../_components/CrmModulePage";
+import { WorkManagementPage } from "../_components/WorkManagementPage";
 
 export function TimesheetPage() {
-  return <CrmModulePage module="timesheet" />;
+  return <WorkManagementPage kind="timesheets" />;
 }

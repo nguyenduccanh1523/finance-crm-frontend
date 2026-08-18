@@ -3,6 +3,7 @@ import { Input } from "@/components/ui/input";
 import {
   ArrowLeftRight,
   Bell,
+  Check,
   LogOut,
   Languages,
   Moon,
@@ -47,12 +48,6 @@ export function OrganizationHeader({
 
   const handleToggleTheme = () => {
     dispatch(setTheme(theme === "dark" ? "light" : "dark"));
-  };
-
-  const toggleLanguage = () => {
-    const nextLanguage = language === "vi" ? "en" : "vi";
-    void i18n.changeLanguage(nextLanguage);
-    dispatch(setLanguage(nextLanguage));
   };
 
   const dropdownItemClass =
@@ -100,15 +95,22 @@ export function OrganizationHeader({
           <span className="hidden sm:inline">{t("organization.new")}</span>
         </Button>
 
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={toggleLanguage}
-          title={t("language")}
-          className="h-9 w-9 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-900"
-        >
-          <Languages className="h-4 w-4" />
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="sm" className="h-9 gap-1.5 rounded-xl px-2.5" title={t("language")}>
+              <Languages className="h-4 w-4" />
+              <span className="text-xs font-semibold">{language === "vi" ? "VI" : "EN"}</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-44 rounded-xl p-1">
+            {(["vi", "en"] as const).map((code) => (
+              <DropdownMenuItem key={code} onClick={() => { dispatch(setLanguage(code)); void i18n.changeLanguage(code); }} className="flex cursor-pointer items-center justify-between rounded-lg">
+                <span>{code === "vi" ? "🇻🇳 Tiếng Việt" : "🇬🇧 English"}</span>
+                {language === code && <Check className="h-4 w-4 text-primary" />}
+              </DropdownMenuItem>
+            ))}
+          </DropdownMenuContent>
+        </DropdownMenu>
 
         <Button
           variant="ghost"

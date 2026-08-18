@@ -1,5 +1,5 @@
-import { CrmModulePage } from "../_components/CrmModulePage";
+import { WorkManagementPage } from "../_components/WorkManagementPage";
 
 export function ProjectsPage() {
-  return <CrmModulePage module="projects" />;
+  return <WorkManagementPage kind="projects" />;
 }
